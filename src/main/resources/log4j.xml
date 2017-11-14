@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
+  -->
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+    <!-- Console Appender -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-4p] %d{yyyy-MM-dd HH:mm:ss,SSS} [%F:%L] %M - %m%n" />
+        </layout>
+    </appender>
+
+    <!-- FILE appender -->
+    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${catalina.home}/Users/wanghuijian/logs/label.log" />
+        <param name="Append" value="true" />
+        <param name="MaxBackupIndex" value="20" />
+        <param name="MaxFileSize" value="500MB" />
+        <param name="Encoding" value="UTF-8" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-4p] %d{yyyy-MM-dd HH:mm:ss,SSS} [%F:%L] %M - %m%n" />
+        </layout>
+    </appender>
+
+    <!--<logger name="org.springframework" additivity="true">-->
+        <!--<level value="ERROR" />-->
+    <!--</logger>-->
+
+    <root>
+        <priority value ="INFO" />
+        <!--<appender-ref ref="console" />-->
+        <appender-ref ref="file" />
+    </root>
+</log4j:configuration>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grid.dao.UserDao">
+
+    <resultMap id="userMap" type="com.grid.entity.User">
+        <result column="uid" property="uid"/>
+        <result column="name" property="name"/>
+        <result column="mphone" property="mphone"/>
+        <result column="telphone" property="telphone"/>
+        <result column="password" property="password"/>
+        <result column="gender" property="gender"/>
+        <result column="type" property="type"/>
+        <result column="loginname" property="loginname"/>
+        <result column="remarks" property="remarks"/>
+        <result column="createdate" property="createdate"/>
+        <result column="ugroup" property="ugroup"/>
+        <result column="department" property="department"/>
+        <result column="uauth" property="uauth"/>
+        <result column="managegroup" property="managegroup"/>
+    </resultMap>
+
+    <sql id="fields">
+        uid, name, mphone, telphone, password, gender, type, loginname, remarks, createdate, ugroup, department, uauth, managegroup
+    </sql>
+
+    <insert id="saveAddUserAndAdmin" parameterType="com.grid.entity.User">
+        insert into user( <include refid="fields"/> )
+        values(#{uid}, #{name}, #{mphone}, #{telphone}, #{password}, #{gender},
+        #{type}, #{loginname}, #{remarks}, now(), #{ugroup}, #{department}, #{uauth}, #{managegroup})
+    </insert>
+
+    <select id = "checkLoginname" parameterType="string" resultType="com.grid.entity.SingleValueBean">
+        select 1 as valueinfo
+        from user
+        where loginname = #{loginname}
+    </select>
+
+    <select id="getAllUserAndAdminCount" resultType="com.grid.entity.SingleValueBean">
+        select count(*) as valueinfo
+        from user
+        where isdel = '0'
+    </select>
+
+    <select id="listAllUserAndAdmin" resultType="com.grid.entity.User"
+            parameterType="com.grid.entity.PaginationParamBean">
+        select uid, name, mphone, telphone, getcodetxt('gender',gender) gender,getcodetxt('usertype',type) type,loginname,
+        date_format(createdate,'%Y-%m-%d %H:%i:%s') createDatestr,remarks, ugroup, department, uauth, managegroup
+        from user
+        where isdel = '0'
+        order by uid desc,createdate desc
+        limit #{startnum},#{getrows}
+    </select>
+
+    <select id="checkUidIsExists" resultType="com.grid.entity.User">
+        SELECT * FROM user WHERE uid = #{uid} and isdel = '0'
+    </select>
+
+    <update id="saveResetPassword" parameterType="com.grid.entity.ResetPasswordBean">
+        update user
+        set password = #{password}
+        where uid = #{uid}
+    </update>
+
+    <!--<select id="checkUidIsExists" resultType="java.lang.String">-->
+        <!--select 1 as valueinfo-->
+        <!--from user-->
+        <!--where uid = #{uid}-->
+        <!--and isdel = '0'-->
+    <!--</select>-->
+
+    <select id="getUserAndAdminById" resultType="com.grid.entity.User">
+        select <include refid="fields"/>
+        from user
+        where uid = #{uid}
+    </select>
+
+    <update id="saveModifyUserAndAdmin" parameterType="com.grid.entity.UserBean">
+        update user
+        set name = #{name},mphone = #{mphone}, telphone=#{telphone}, gender = #{gender}, type = #{type},
+        loginname = #{loginname},remarks = #{remarks}, ugroup=#{ugroup}, department=#{department},
+        managegroup=#{managegroup}, uauth=#{uauth}
+        where uid = #{uid}
+    </update>
+
+    <update id="saveDeleteUserAndAdmin">
+        update user
+        set isdel = '1',loginname = null,mphone = null
+        where uid = #{uid}
+    </update>
+
+    <select id="getAllUserAndAdminCountByParam" resultType="com.grid.entity.SingleValueBean"
+            parameterType="com.grid.entity.QueryUserAndAdminParamBean">
+        select count(uid) as valueinfo
+        from user
+        where isdel = '0'
+        <if test="mphoneCondition != null and mphoneCondition != ''">
+            and mphone like concat('%', #{mphoneCondition}, '%')
+        </if>
+        <if test="nameCondition != null and nameCondition != ''">
+            and name like concat('%', #{nameCondition}, '%')
+        </if>
+        <if test="typeCondition != null and typeCondition != 0">
+            and type = #{typeCondition}
+        </if>
+        <if test="loginnameCondition != null and loginnameCondition != ''">
+            and loginname like concat('%', #{loginnameCondition}, '%')
+        </if>
+        <if test="genderCondition != null and genderCondition != 0">
+            and  gender = #{genderCondition}
+        </if>
+        <if test="starttimeCondition != null and starttimeCondition !=''">
+            and createdate <![CDATA[>=]]> #{starttimeCondition}
+        </if>
+        <if test="endtimeCondition != null and endtimeCondition !=''">
+            and createdate <![CDATA[<=]]> #{endtimeCondition}
+        </if>
+        <if test="departCondition != null and departCondition != ''">
+            and department like concat('%', #{departCondition}, '%')
+        </if>
+        <if test="groupCondition != null and groupCondition != ''">
+            and ugroup like concat('%', #{groupCondition}, '%')
+        </if>
+        <if test="telphoneCondition != null and telphoneCondition != ''">
+            and telphone like concat('%', #{telphoneCondition}, '%')
+        </if>
+    </select>
+
+    <select id="listAllUserAndAdminByParam" resultType="com.grid.entity.User"
+            parameterType="com.grid.entity.QueryUserAndAdminParamBean">
+        select uid, name, mphone, telphone, getcodetxt('gender',gender) gender,loginname,remarks,getcodetxt('usertype',type) type,
+        date_format(createdate,'%Y-%m-%d %H:%i:%s') createDatestr, ugroup, department, uauth, managegroup
+        from user
+        where isdel = '0'
+        <if test="typeCondition != null and typeCondition != 0">
+            and  type = #{typeCondition}
+        </if>
+        <if test="mphoneCondition != null and mphoneCondition != ''">
+            and mphone like concat('%', #{mphoneCondition}, '%')
+        </if>
+        <if test="nameCondition != null and nameCondition != ''">
+            and name like concat('%', #{nameCondition}, '%')
+        </if>
+        <if test="loginnameCondition != null and loginnameCondition != ''">
+            and loginname like concat('%', #{loginnameCondition}, '%')
+        </if>
+        <if test="genderCondition != null and genderCondition != 0">
+            and  gender = #{genderCondition}
+        </if>
+        <if test="starttimeCondition != null and starttimeCondition !=''">
+            and createdate <![CDATA[>=]]> #{starttimeCondition}
+        </if>
+        <if test="endtimeCondition != null and endtimeCondition !=''">
+            and createdate <![CDATA[<=]]> #{endtimeCondition}
+        </if>
+        <if test="departCondition != null and departCondition != ''">
+            and department like concat('%', #{departCondition}, '%')
+        </if>
+        <if test="groupCondition != null and groupCondition != ''">
+            and ugroup like concat('%', #{groupCondition}, '%')
+        </if>
+        <if test="telphoneCondition != null and telphoneCondition != ''">
+            and telphone like concat('%', #{telphoneCondition}, '%')
+        </if>
+        order by createdate desc
+        limit #{startnum},#{getrows}
+    </select>
+
+    <select id="checkIsLoginnameExists" resultType="com.grid.entity.SingleValueBean">
+        select 1 as valueinfo
+        from user
+        where loginname = #{loginname}
+        and isdel = '0'
+    </select>
+
+    <select id="checkPassword" parameterType="com.grid.entity.LoginBean" resultType="com.grid.entity.SingleValueBean">
+        select 1 as valueinfo
+        from user
+        where loginname = #{loginname}
+        and password = #{password}
+        and isdel = '0'
+    </select>
+
+    <select id="getUserInfoByLoginname"  resultType="com.grid.entity.LoginUserBean">
+        select uid, name as uname,loginname,type as utype, getcodetxt('usertype', type) as utypeStr,
+        getcodetxt('gender', gender) gender, mphone, telphone, uauth, ugroup, department, uauth, managegroup
+        from user
+        where loginname = #{loginname}
+        and isdel = '0'
+    </select>
+
+    <update id="updatePassword" parameterType="map">
+        UPDATE user
+        SET password = #{1}
+        WHERE uid = #{0}
+    </update>
+</mapper>
+
