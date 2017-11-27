@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grid.dao.PatientDao">
+
+    <resultMap id="patientMap" type="com.grid.entity.PatientBean">
+        <result column="pid" property="pid"/>
+        <result column="card_id" property="cardId"/>
+        <result column="name" property="name"/>
+        <result column="birthday" property="birthday"/>
+        <result column="mphone" property="mphone"/>
+        <result column="gender" property="gender"/>
+        <result column="balance" property="balance"/>
+        <result column="isdel" property="isdel"/>
+        <result column="remark" property="remark"/>
+        <result column="create_date" property="createDate"/>
+    </resultMap>
+
+    <sql id="fields">
+        pid, card_id, name, birthday, mphone, gender, balance, isdel, remark, create_date
+    </sql>
+
+    <select id="getPatientByParam" parameterType="com.grid.entity.QueryPatientParamBean" resultMap="patientMap">
+        SELECT <include refid="fields"/>
+        FROM patient
+        <where>
+            <if test="pid != null">AND pid LIKE '%${pid}%'</if>
+            <if test="cardId != null">AND card_id LIKE '%${cardId}%'</if>
+            <if test="name != null">AND name LIKE '%${name}%'</if>
+            <if test="age != null">AND year(birthday) =  YEAR(Now()) - #{age}</if>
+            <if test="mphone != null">AND mphone LIKE '%${mphone}%'</if>
+            <if test="gender != null">AND gender LIKE '%${gender}%'</if>
+            <if test="balanceFrom != null">AND balance <![CDATA[>=]]> #{balanceFrom}</if>
+            <if test="balanceTo != null">AND balance <![CDATA[<=]]> #{balanceTo}</if>
+        </where>
+        ORDER BY CONVERT( ${sort} USING gbk ) COLLATE gbk_chinese_ci ${order}
+        limit #{startnum}, #{getrows}
+    </select>
+
+    <select id="getPatientByParamCount" parameterType="com.grid.entity.QueryPatientParamBean" resultType="int">
+        SELECT COUNT(*)
+        FROM patient
+        <where>
+            <if test="pid != null">AND pid LIKE '%${pid}%'</if>
+            <if test="cardId != null">AND card_id LIKE '%${cardId}%'</if>
+            <if test="name != null">AND name LIKE '%${name}%'</if>
+            <if test="age != null">AND year(birthday) =  YEAR(Now()) - #{age}</if>
+            <if test="mphone != null">AND mphone LIKE '%${mphone}%'</if>
+            <if test="gender != null">AND gender LIKE '%${gender}%'</if>
+            <if test="balanceFrom != null">AND balance <![CDATA[>=]]> #{balanceFrom}</if>
+            <if test="balanceTo != null">AND balance <![CDATA[<=]]> #{balanceTo}</if>
+        </where>
+    </select>
+
+</mapper>

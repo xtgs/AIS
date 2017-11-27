@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-    <title>设备台账管理系统</title>
+    <title>客户信息管理系统</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/easyui/themes/default/easyui.css?_=<%=Constant.FrontEndVersion%>">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/easyui/themes/icon.css?_=<%=Constant.FrontEndVersion%>">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/easyui/demo/demo.css?_=<%=Constant.FrontEndVersion%>">
@@ -31,44 +31,16 @@
                 }
             });
             $('#content_panel').panel({
-                href:"<%=request.getContextPath() %>/dev/fwdDevMainPage.do?random_id="+Math.random(),
+                href:"<%=request.getContextPath() %>/patient/fwdPatientMainPage.do?random_id="+Math.random(),
                 onLoad:function () {
                 }
             });
         });
         function forwardUserManage(nodeid){
             switch (nodeid){
-                case 'dev_manage':
+                case 'patient_manage':
                     $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/dev/fwdDevMainPage.do?random_id="+Math.random(),
-                        onLoad:function () {
-                        }
-                    });
-                    break;
-                case 'dev_auditing':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/audit/fwdToBeAuditPage.do?random_id="+Math.random(),
-                        onLoad:function () {
-                        }
-                    });
-                    break;
-                case 'dev_audited':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/audit/fwdBeAuditedPage.do?random_id="+Math.random(),
-                        onLoad:function () {
-                        }
-                    });
-                    break;
-                case 'auditor_auditing':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/audit/fwdToMakeAuditPage.do?random_id="+Math.random(),
-                        onLoad:function () {
-                        }
-                    });
-                    break;
-                case 'auditor_audited':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/audit/fwdMakeAuditedPage.do?random_id="+Math.random(),
+                        href:"<%=request.getContextPath() %>/patient/fwdPatientMainPage.do?random_id="+Math.random(),
                         onLoad:function () {
                         }
                     });
@@ -82,35 +54,7 @@
                     break;
                 case 'audit_tree':
                     break;
-                case 'label_print':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/label/fwdManageLabelPage.do?random_id="+Math.random(),
-                        onLoad:function(){
-                        }
-                    });
-                    break;
-                case 'room_space':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/space/fwdManageSpacePage.do?random_id="+Math.random(),
-                        onLoad:function(){
-                        }
-                    });
-                    break;
-                case 'computer_manage':
-                    break;
-                case 'pc_manage':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/computer/fwdManagePCPage.do?random_id="+Math.random(),
-                        onLoad:function(){
-                        }
-                    });
-                    break;
-                case 'note_manage':
-                    $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/computer/fwdManageNotePage.do?random_id="+Math.random(),
-                        onLoad:function(){
-                        }
-                    });
+                case 'patient_tree':
                     break;
                 default:
                     MsgBox.show("功能正在开发，敬请期待！");
@@ -147,7 +91,7 @@
         <img src="<%=request.getContextPath()%>/image/page/sdgrid_logo.png" width="181.5px" height="60px" />
     </div>
     <div style="font-size: 30px;float:left;margin-top: 10px">
-        设备台账管理系统
+        客户信息管理系统
     </div>
     <div style="height:40px;font-size: 16px;line-height:20px;float: right;margin-right: 10px;margin-top: 5px">
         <%=userBean.getUname()%>|<%=userBean.getUtypeStr()%><br/>
@@ -159,7 +103,7 @@
     <div id="content_panel" class="easyui-panel"style="padding:10px;text-align: center"
          data-options="fit:true,border:false">
         <div style="height: 200px;"></div>
-        <div style="height:100px;font-size: 30px;line-height: 60px;">欢迎使用设备台账管理系统</div>
+        <div style="height:100px;font-size: 30px;line-height: 60px;">欢迎使用客户信息管理系统</div>
     </div>
 </div>
 <div data-options="region:'west',split:false,title:'导航菜单',collapsible:false" style="width:180px;padding:10px;">
@@ -167,66 +111,22 @@
     <div id="modifyPasswordDialog"></div>
     <div class="easyui-panel" style="padding:5px; border: 0px;) ">
         <ul id="menu-tree" class="easyui-tree">
-            <%--<li id="dev_manage">台账管理</li>--%>
-
-            <li id="audit_tree">
-                <span>台账管理</span>
+            <li id="patient_tree">
+                <span>客户管理</span>
                 <ul>
-                    <li id="dev_manage">台账管理</li>
-                </ul>
-            </li>
-            <%--<li id="dev_auditing">待审核</li>--%>
-
-            <li id="audit_tree">
-                <span>审核进度</span>
-                <ul>
-                    <li id="dev_auditing">待审核</li>
-                    <li id="dev_audited">已审核</li>
+                    <li id="patient_manage">客户管理</li>
+                    <li id="patient_record">交易记录</li>
                 </ul>
             </li>
 
-            <% if(userBean.getUtypeStr().equals("审核员")){%>
+            <% if(userBean.getUtypeStr().equals("管理员") || userBean.getUtypeStr().equals("审核员")){%>
                 <li id="audit_tree">
-                    <span>审核管理</span>
+                    <span>员工管理</span>
                     <ul>
-                        <li id="auditor_auditing">待审核</li>
-                        <li id="auditor_audited">已审核</li>
+                        <li id="user_manage">员工管理</li>
                     </ul>
                 </li>
             <% } %>
-
-            <% if(userBean.getUtypeStr().equals("管理员")){%>
-                <li id="audit_tree">
-                    <span>审核管理</span>
-                    <ul>
-                        <li id="auditor_auditing">待审核</li>
-                        <li id="auditor_audited">已审核</li>
-                    </ul>
-                </li>
-                <li id="audit_tree">
-                    <span>用户管理</span>
-                    <ul>
-                        <li id="user_manage">用户管理</li>
-                    </ul>
-                </li>
-            <% } %>
-                <li id="audit_tree">
-                    <span>其他</span>
-                    <ul>
-                        <li id="label_print">标签打印</li>
-                        <li id="room_space">机房空间</li>
-                    </ul>
-                </li>
-
-                <% if(userBean.getLoginname().equals("yangguanqun")){%>
-                <li id="computer_manage">
-                    <span>电脑管理</span>
-                    <ul>
-                        <li id="pc_manage">台式机管理</li>
-                        <li id="note_manage">笔记本管理</li>
-                    </ul>
-                </li>
-                <% } %>
 
         </ul>
     </div>

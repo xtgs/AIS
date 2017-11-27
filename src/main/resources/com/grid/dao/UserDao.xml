@@ -16,18 +16,16 @@
         <result column="createdate" property="createdate"/>
         <result column="ugroup" property="ugroup"/>
         <result column="department" property="department"/>
-        <result column="uauth" property="uauth"/>
-        <result column="managegroup" property="managegroup"/>
     </resultMap>
 
     <sql id="fields">
-        uid, name, mphone, telphone, password, gender, type, loginname, remarks, createdate, ugroup, department, uauth, managegroup
+        uid, name, mphone, telphone, password, gender, type, loginname, remarks, createdate, ugroup, department
     </sql>
 
     <insert id="saveAddUserAndAdmin" parameterType="com.grid.entity.User">
         insert into user( <include refid="fields"/> )
         values(#{uid}, #{name}, #{mphone}, #{telphone}, #{password}, #{gender},
-        #{type}, #{loginname}, #{remarks}, now(), #{ugroup}, #{department}, #{uauth}, #{managegroup})
+        #{type}, #{loginname}, #{remarks}, now(), #{ugroup}, #{department})
     </insert>
 
     <select id = "checkLoginname" parameterType="string" resultType="com.grid.entity.SingleValueBean">
@@ -45,7 +43,7 @@
     <select id="listAllUserAndAdmin" resultType="com.grid.entity.User"
             parameterType="com.grid.entity.PaginationParamBean">
         select uid, name, mphone, telphone, getcodetxt('gender',gender) gender,getcodetxt('usertype',type) type,loginname,
-        date_format(createdate,'%Y-%m-%d %H:%i:%s') createDatestr,remarks, ugroup, department, uauth, managegroup
+        date_format(createdate,'%Y-%m-%d %H:%i:%s') createDatestr,remarks, ugroup, department
         from user
         where isdel = '0'
         order by uid desc,createdate desc
@@ -78,8 +76,7 @@
     <update id="saveModifyUserAndAdmin" parameterType="com.grid.entity.UserBean">
         update user
         set name = #{name},mphone = #{mphone}, telphone=#{telphone}, gender = #{gender}, type = #{type},
-        loginname = #{loginname},remarks = #{remarks}, ugroup=#{ugroup}, department=#{department},
-        managegroup=#{managegroup}, uauth=#{uauth}
+        loginname = #{loginname},remarks = #{remarks}, ugroup=#{ugroup}, department=#{department}
         where uid = #{uid}
     </update>
 
@@ -129,7 +126,7 @@
     <select id="listAllUserAndAdminByParam" resultType="com.grid.entity.User"
             parameterType="com.grid.entity.QueryUserAndAdminParamBean">
         select uid, name, mphone, telphone, getcodetxt('gender',gender) gender,loginname,remarks,getcodetxt('usertype',type) type,
-        date_format(createdate,'%Y-%m-%d %H:%i:%s') createDatestr, ugroup, department, uauth, managegroup
+        date_format(createdate,'%Y-%m-%d %H:%i:%s') createDatestr, ugroup, department
         from user
         where isdel = '0'
         <if test="typeCondition != null and typeCondition != 0">
@@ -183,7 +180,7 @@
 
     <select id="getUserInfoByLoginname"  resultType="com.grid.entity.LoginUserBean">
         select uid, name as uname,loginname,type as utype, getcodetxt('usertype', type) as utypeStr,
-        getcodetxt('gender', gender) gender, mphone, telphone, uauth, ugroup, department, uauth, managegroup
+        getcodetxt('gender', gender) gender, mphone, telphone, ugroup, department
         from user
         where loginname = #{loginname}
         and isdel = '0'
