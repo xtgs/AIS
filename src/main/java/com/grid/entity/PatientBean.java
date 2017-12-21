@@ -13,13 +13,14 @@ public class PatientBean {
     private String pid;
     private String cardId; //身份证号
     private String name;
-    private Date birthday;
+    private String birthday;
     private String mphone;
     private String gender;
     private BigDecimal balance;
     private String isdel;
     private Date createDate;
     private String remark;
+    private String operateAuth;
 
 
     public String getPid() {
@@ -46,11 +47,11 @@ public class PatientBean {
         this.name = name;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -100,6 +101,14 @@ public class PatientBean {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getOperateAuth() {
+        return operateAuth;
+    }
+
+    public void setOperateAuth(String operateAuth) {
+        this.operateAuth = operateAuth;
     }
 
     @Override

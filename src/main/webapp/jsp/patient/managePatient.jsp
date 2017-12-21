@@ -7,23 +7,6 @@
     LoginUserBean userBean = (LoginUserBean)sessionObj.getAttribute(Constant.LoginUserKey);
 %>
 <script>
-    function forwardAddPatientPage(){
-        $('#addPatientAndDialog').dialog({
-            title: '添加客户',
-            width: 500,
-            height: 450,
-            closed: true,
-            cache: false,
-            href: "<%=request.getContextPath()%>/dev/fwdAddPatientPage.do?random_id=" + Math.random(),
-            modal: true
-        });
-        $("#addPatientAndDialog").dialog({
-            onClose:function(){
-                $("#addDevAndDialog").empty();
-            }
-        });
-        $('#addPatientAndDialog').dialog("open");
-    }
     $(function () {
         $("#patientList").datagrid({
             title:"客户列表",
@@ -37,7 +20,7 @@
                 { field: 'pid', title: '卡号', width: '16%', sortable:'true'},
                 { field: 'cardId', title: '身份证号', width: '16%', sortable:'true'},
                 { field: 'name', title: '姓名', width: '7%', sortable:'true'},
-                { field: 'birthday', title: '年龄', width: '4%', sortable:'true',
+                { field: 'birthday', title: '年龄', width: '5%', sortable:'true',
                     formatter:function(date){
                         var unixTimestamp = new Date(date);
                         var nowTime = new Date();
@@ -45,40 +28,171 @@
                     }
                 },
                 { field: 'mphone', title: '手机号', width: '10%', sortable:'true'},
-                { field: 'gender', title: '性别', width: '3%', sortable:'true' },
+                { field: 'gender', title: '性别', width: '5%', sortable:'true',
+                    formatter: function (value) {
+                        if(value == "1") {
+                            return "男";
+                        } else if (value == "2") {
+                            return "女";
+                        } else {
+                            return "未知"
+                        }
+                    }
+                },
                 { field: 'balance', title: '余额',width: '7%', sortable:'true' },
-                { field: 'createDate', title: '建卡时间', width: '9%', sortable:'true',
+                { field: 'createDate', title: '建卡时间', width: '10%', sortable:'true',
                     formatter:function(date){
                         var unixTimestamp = new Date(date);
                         var month = unixTimestamp.getMonth()+1;
                         return unixTimestamp.getUTCFullYear()+"."+ month +"."+unixTimestamp.getDate();
                     }
                 },
-                { field: 'remark', title: '备注', width: '15%', sortable:'true' },
-                { field: "operateAuth", title: '操作',width:'10%', align: 'center',
+                <% if(userBean.getUtype().equals("2")) {%>
+                { field: "operateAuth", title: '操作',width:'15%', align: 'center',
                     formatter: function (value, rowData, rowIndex) {
-                        if (value == "0") {
-                            return "无操作权限";
-                        } else if (value == "1") {
-                            return '<a href="javascript:void(0)" onclick="fwdModifyPatientPage(' + rowIndex + ')">修改</a>&nbsp&nbsp' +
-                                    '<a href="javascript:void(0)" onclick="deletePatient(' + rowIndex + ')">删除</a>';
-                        } else {
-                            return "数据错误!";
-                        }
+                        return '<a href="javascript:void(0)" onclick="fwdChargePage(' + rowIndex + ')">消费</a>&nbsp&nbsp' +
+                                '<a href="javascript:void(0)" onclick="fwdTopupPage(' + rowIndex + ')">充值</a>&nbsp&nbsp' +
+                                '<a href="javascript:void(0)" onclick="fwdModifyPatientPage(' + rowIndex + ')">修改</a>&nbsp&nbsp' +
+                                '<a href="javascript:void(0)" onclick="deletePatient(' + rowIndex + ')">删除</a>';
                     }
-                }
+                },
+                <% } else if (userBean.getUtype().equals("3")) {%>
+                { field: "operateAuth", title: '操作',width:'15%', align: 'center',
+                    formatter: function (value, rowData, rowIndex) {
+                        return '<a href="javascript:void(0)" onclick="fwdChargePage(' + rowIndex + ')">消费</a>&nbsp&nbsp' +
+                                '<a href="javascript:void(0)" onclick="fwdTopupPage(' + rowIndex + ')">充值</a>&nbsp&nbsp' +
+                                '<a href="javascript:void(0)" onclick="fwdModifyPatientPage(' + rowIndex + ')">修改</a>';
+                    }
+                },
+                <% } else if (userBean.getUtype().equals("1")) {%>
+                { field: "operateAuth", title: '操作',width:'15%', align: 'center',
+                    formatter: function (value, rowData, rowIndex) {
+                        return '<a href="javascript:void(0)" onclick="fwdChargePage(' + rowIndex + ')">消费</a>&nbsp&nbsp' +
+                                '<a href="javascript:void(0)" onclick="fwdModifyPatientPage(' + rowIndex + ')">修改</a>';
+                    }
+                },
+                <% }%>
+                { field: 'remark', title: '备注', width: '15%', sortable:'true' }
             ]],
             pagination: true
         });
         $('#patientList').datagrid('getPager').pagination({
             pageSize: 10,
             pageNumber: 1,
-            pageList: [10,20,30],
+            pageList: [10,50,100],
             beforePageText: '第',
             afterPageText: '页    共 {pages} 页',
             displayMsg: '当前显示{from} - {to}条,共 {total} 条记录'
         });
     });
+
+    function forwardAddPatientPage(){
+        $('#addPatientAndDialog').dialog({
+            title: '添加客户',
+            width: 500,
+            height: 450,
+            closed: true,
+            cache: false,
+            href: "<%=request.getContextPath()%>/patient/fwdAddPatientPage.do?random_id=" + Math.random(),
+            modal: true
+        });
+        $("#addPatientAndDialog").dialog({
+            onClose:function(){
+                $("#addDevAndDialog").empty();
+            }
+        });
+        $('#addPatientAndDialog').dialog("open");
+    }
+
+    function fwdModifyPatientPage(index){
+        $('#patientList').datagrid('selectRow',index);// 关键在这里
+        var row = $('#patientList').datagrid('getSelected');
+        if (row){
+            $('#modifyPatientDialog').dialog({
+                title: '修改客户信息',
+                width: 500,
+                height: 450,
+                closed: true,
+                cache: false,
+                modal: true
+            });
+            $("#modifyPatientDialog").dialog({
+                onClose:function(){
+                    $("#modifyPatientDialog").empty();
+                }
+            });
+            $('#modifyPatientDialog').dialog("open");
+            $("#modifyPatientDialog").dialog("refresh", "<%=request.getContextPath()%>/patient/fwdModifyPatientPage.do?pid="+row.pid);
+        }
+    }
+
+    function fwdChargePage(index) {
+        $('#patientList').datagrid('selectRow',index);// 关键在这里
+        var row = $('#patientList').datagrid('getSelected');
+        if (row){
+            $('#chargeDialog').dialog({
+                title: '消费信息',
+                width: 500,
+                height: 450,
+                closed: true,
+                cache: false,
+                modal: true
+            });
+            $("#chargeDialog").dialog({
+                onClose:function(){
+                    $("#chargeDialog").empty();
+                }
+            });
+            $('#chargeDialog').dialog("open");
+            $("#chargeDialog").dialog("refresh", "<%=request.getContextPath()%>/patient/fwdChargePage.do?pid="+row.pid);
+        }
+    }
+
+    function fwdTopupPage(index) {
+        $('#patientList').datagrid('selectRow',index);// 关键在这里
+        var row = $('#patientList').datagrid('getSelected');
+        if (row){
+            $('#topupDialog').dialog({
+                title: '充值信息',
+                width: 500,
+                height: 450,
+                closed: true,
+                cache: false,
+                modal: true
+            });
+            $("#topupDialog").dialog({
+                onClose:function(){
+                    $("#topupDialog").empty();
+                }
+            });
+            $('#topupDialog').dialog("open");
+            $("#topupDialog").dialog("refresh", "<%=request.getContextPath()%>/patient/fwdTopupPage.do?pid="+row.pid);
+        }
+    }
+
+    function deletePatient(index){
+        $('#patientList').datagrid('selectRow',index);// 关键在这里
+        var row = $('#patientList').datagrid('getSelected');
+        if(row){
+            $.messager.confirm('确认','您确认想要删除【' + row.name + '】该账户吗？',function(r){
+                if (r){
+                    $.ajax({
+                        url:"<%=request.getContextPath()%>/patient/deletePatient.do?pid=" + row.pid+"&random_id="+Math.random(),
+                        type:'post',
+                        async:false,
+                        error:function(data){
+                            MsgBox.show(data.responseText);
+                        },
+                        success:function(data){
+                            MsgBox.show(data);
+                            $('#patientList').datagrid('reload');
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     function SearchUserAndAdminByParams() {
         var pid = $("#pid").val();
         var cardId = $("#cardId").val();
@@ -100,7 +214,7 @@
         queryParameter.balanceTo = balanceTo;
         $('#patientList').datagrid({
             pageNumber: 1,
-            pageList: [10,100,1000]
+            pageList: [10,50,100]
         });
         $("#patientList").datagrid("reload");
     }
@@ -117,82 +231,18 @@
         $("#queryUserAndAdminParamsForm").form('clear');
         $('#patientList').datagrid({
             pageNumber: 1,
-            pageList: [10,100,1000]
+            pageList: [10,50,100]
         });
         $("#patientList").datagrid("reload");
-    }
-    function saveResetPassword(index){
-        $('#userAndAdminList').datagrid('selectRow',index);
-        var row = $('#userAndAdminList').datagrid('getSelected');
-        if(row){
-            $.messager.confirm('提示信息', '确定要重置[' + row.name +']密码为123456', function(r){
-                if (r){
-                    var md5Pw = $.md5("123456");
-                    $.ajax({
-                        url:"<%=request.getContextPath()%>/user/saveResetPassword.do?uid=" + row.uid + "&password=" + md5Pw + "&random_id="+Math.random(),
-                        type:'get',
-                        async:false,
-                        error:function(data){
-                            MsgBox.show(data.responseText);
-                        },
-                        success:function(data){
-                            MsgBox.show(data);
-                        }
-                    });
-                }
-            });
-        }
-    }
-    function fwdModifyPatientPage(index){
-        $('#patientList').datagrid('selectRow',index);// 关键在这里
-        var row = $('#patientList').datagrid('getSelected');
-        if (row){
-            $('#modifyPatientDialog').dialog({
-                title: '修改台账信息',
-                width: 500,
-                height: 450,
-                closed: true,
-                cache: false,
-                modal: true
-            });
-            $("#modifyPatientDialog").dialog({
-                onClose:function(){
-                    $("#modifyDevDialog").empty();
-                }
-            });
-            $('#modifyPatientDialog').dialog("open");
-            $("#modifyPatientDialog").dialog("refresh", "<%=request.getContextPath()%>/dev/fwdModifyDevPage.do?id="+row.vid);
-        }
-    }
-
-    function deletePatient(index){
-        $('#patientList').datagrid('selectRow',index);// 关键在这里
-        var row = $('#patientList').datagrid('getSelected');
-        if(row){
-            $.messager.confirm('确认','您确认想要删除【' + row.deployedSystem + '】吗？',function(r){
-                if (r){
-                    $.ajax({
-                        url:"<%=request.getContextPath()%>/dev/deleteDev.do?vid=" + row.vid+"&random_id="+Math.random(),
-                        type:'post',
-                        async:false,
-                        error:function(data){
-                            MsgBox.show(data.responseText);
-                        },
-                        success:function(data){
-                            MsgBox.show(data);
-                            $('#patientList').datagrid('reload');
-                        }
-                    });
-                }
-            });
-        }
     }
 
 </script>
 <div style="padding:2px 0;">
     <div id="viewUserAndAdminDialog" style="text-align: center;"></div>
-    <div id="addDevAndDialog" style="text-align: center;"></div>
-    <div id="modifyDevDialog" style="text-align: center;"></div>
+    <div id="addPatientAndDialog" style="text-align: center;"></div>
+    <div id="modifyPatientDialog" style="text-align: center;"></div>
+    <div id="chargeDialog" style="text-align: center;"></div>
+    <div id="topupDialog" style="text-align: center;"></div>
     <div style="margin:0px auto;width: 950px;">
         <form id="queryUserAndAdminParamsForm">
             <table cellpadding="5">
@@ -228,20 +278,20 @@
 
                 </tr>
                 <tr>
-                    <td nowrap="nowrap">手机号:</td>
-                    <td>
-                        <input id="mphone" class="easyui-textbox" name="mphone"
-                               data-options="prompt:'手机号'" />
-                    </td>
-
                     <td nowrap="nowrap">性别:</td>
                     <td>
                         <select name="gender" id="gender" class="easyui-combobox"
-                                editable="false"  style="width:100%">
+                                editable="false"  style="width:90%">
                             <option value="" selected>全部</option>
                             <option value="1">男</option>
                             <option value="2">女</option>
                         </select>
+                    </td>
+
+                    <td nowrap="nowrap">手机号:</td>
+                    <td>
+                        <input id="mphone" class="easyui-textbox" name="mphone"
+                               data-options="prompt:'手机号'" />
                     </td>
 
                     <td nowrap="nowrap">余额:</td>

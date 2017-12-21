@@ -32,6 +32,7 @@
             <if test="gender != null">AND gender LIKE '%${gender}%'</if>
             <if test="balanceFrom != null">AND balance <![CDATA[>=]]> #{balanceFrom}</if>
             <if test="balanceTo != null">AND balance <![CDATA[<=]]> #{balanceTo}</if>
+            AND isdel = "0"
         </where>
         ORDER BY CONVERT( ${sort} USING gbk ) COLLATE gbk_chinese_ci ${order}
         limit #{startnum}, #{getrows}
@@ -49,6 +50,117 @@
             <if test="gender != null">AND gender LIKE '%${gender}%'</if>
             <if test="balanceFrom != null">AND balance <![CDATA[>=]]> #{balanceFrom}</if>
             <if test="balanceTo != null">AND balance <![CDATA[<=]]> #{balanceTo}</if>
+            AND isdel = "0"
+        </where>
+    </select>
+
+    <select id="getPatientById" resultMap="patientMap">
+        SELECT <include refid="fields"/>
+        FROM patient
+        WHERE pid = #{pid}
+    </select>
+
+    <insert id="insert" parameterType="com.grid.entity.PatientBean">
+        INSERT INTO patient(<include refid="fields"/> )
+        VALUES (#{pid}, #{cardId}, #{name}, #{birthday}, #{mphone}, #{gender}, #{balance}, "0", #{remark}, Now())
+    </insert>
+
+    <update id="update" parameterType="com.grid.entity.PatientBean">
+        UPDATE patient
+        SET card_id = #{cardId}, name = #{name}, birthday = #{birthday},
+        mphone = #{mphone}, gender = #{gender}, balance = #{balance}, remark = #{remark}
+        WHERE pid = #{pid}
+    </update>
+
+    <delete id="deletePatientById">
+        UPDATE patient
+        SET isdel = "1"
+        WHERE pid = #{pid}
+    </delete>
+
+    <update id="charge" parameterType="com.grid.entity.ChargeBean">
+        UPDATE patient
+        SET balance = balance - #{realPrice}
+        WHERE pid = #{pid}
+    </update>
+
+    <update id="topup" parameterType="com.grid.entity.TopupBean">
+        UPDATE patient
+        SET balance = balance + #{amount}
+        WHERE pid = #{pid}
+    </update>
+
+    <select id="getTradeRecordByParam" parameterType="com.grid.entity.QueryTradeRecordBean" resultType="com.grid.entity.TradeRecordBean">
+        SELECT * FROM
+        (SELECT
+        c.trade_type as tradeType,
+        c.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
+        c.real_price as amount, c.after_balance as afterBalance,
+        c.uid, u.name as userName,
+        c.create_time as createTime, c.remark
+        FROM charge c
+        LEFT JOIN patient p on c.pid = p.pid
+        LEFT JOIN user u on c.uid = u.uid
+        UNION
+        SELECT
+        t.trade_type as tradeType,
+        t.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
+        t.amount, t.after_balance as afterBalance,
+        t.uid, u.name as userName,
+        t.create_time as createTime, t.remark
+        FROM topup t
+        LEFT JOIN patient p on t.pid = p.pid
+        LEFT JOIN user u on t.uid = u.uid) AS total
+        <where>
+            <if test="tradeType != null and tradeType != ''">AND tradeType LIKE '%${tradeType}%'</if>
+            <if test="pid != null and pid != ''">AND pid LIKE '%${pid}%'</if>
+            <if test="patientName != null and patientName != ''">AND patientName LIKE '%${patientName}%'</if>
+            <if test="patientCardId != null and patientCardId != ''">AND patientCardId LIKE '%${patientCardId}%'</if>
+            <if test="patientPhone != null and patientPhone != ''">AND patientPhone LIKE '%${patientPhone}%'</if>
+            <if test="amount != null and amount != ''">AND amount LIKE '%${amount}%'</if>
+            <if test="afterBalance != null and afterBalance != ''">AND afterBalance LIKE '%${afterBalance}%'</if>
+            <if test="uid != null and uid != ''">AND uid LIKE '%${uid}%'</if>
+            <if test="userName != null and userName != ''">AND userName LIKE '%${userName}%'</if>
+            <if test="createTimeFrom != null and createTimeFrom != ''">AND createTime <![CDATA[>=]]> #{createTimeFrom}</if>
+            <if test="createTimeTo != null and createTimeTo != ''">AND createTime <![CDATA[<=]]> #{createTimeTo}</if>
+        </where>
+        ORDER BY CONVERT( ${sort} USING gbk ) COLLATE gbk_chinese_ci ${order}
+        limit #{startnum}, #{getrows}
+    </select>
+
+    <select id="getTradeRecordCountByParam" parameterType="com.grid.entity.QueryTradeRecordBean" resultType="int">
+        SELECT COUNT(*) FROM
+        (SELECT
+        c.trade_type as tradeType,
+        c.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
+        c.real_price as amount, c.after_balance as afterBalance,
+        c.uid, u.name as userName,
+        c.create_time as createTime, c.remark
+        FROM charge c
+        LEFT JOIN patient p on c.pid = p.pid
+        LEFT JOIN user u on c.uid = u.uid
+        UNION
+        SELECT
+        t.trade_type as tradeType,
+        t.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
+        t.amount, t.after_balance as afterBalance,
+        t.uid, u.name as userName,
+        t.create_time as createTime, t.remark
+        FROM topup t
+        LEFT JOIN patient p on t.pid = p.pid
+        LEFT JOIN user u on t.uid = u.uid) AS total
+        <where>
+            <if test="tradeType != null and tradeType != ''">AND tradeType LIKE '%${tradeType}%'</if>
+            <if test="pid != null and pid != ''">AND pid LIKE '%${pid}%'</if>
+            <if test="patientName != null and patientName != ''">AND patientName LIKE '%${patientName}%'</if>
+            <if test="patientCardId != null and patientCardId != ''">AND patientCardId LIKE '%${patientCardId}%'</if>
+            <if test="patientPhone != null and patientPhone != ''">AND patientPhone LIKE '%${patientPhone}%'</if>
+            <if test="amount != null and amount != ''">AND amount LIKE '%${amount}%'</if>
+            <if test="afterBalance != null and afterBalance != ''">AND afterBalance LIKE '%${afterBalance}%'</if>
+            <if test="uid != null and uid != ''">AND uid LIKE '%${uid}%'</if>
+            <if test="userName != null and userName != ''">AND userName LIKE '%${userName}%'</if>
+            <if test="createTimeFrom != null and createTimeFrom != ''">AND createTime <![CDATA[>=]]> #{createTimeFrom}</if>
+            <if test="createTimeTo != null and createTimeTo != ''">AND createTime <![CDATA[<=]]> #{createTimeTo}</if>
         </where>
     </select>
 

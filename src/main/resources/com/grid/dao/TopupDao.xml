@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grid.dao.TopupDao">
+
+
+    <resultMap id="topupMap" type="com.grid.entity.TopupBean">
+        <id column="tid" property="tid"/>
+        <result column="pid" property="pid"/>
+        <result column="uid" property="uid"/>
+        <result column="pname" property="patientName"/>
+        <result column="uname" property="userName"/>
+        <result column="amount" property="amount"/>
+        <result column="after_balance" property="afterBalance"/>
+        <result column="isdel" property="isdel"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <sql id="fields">
+        pid, uid, amount, after_balance, isdel, remark, create_time
+    </sql>
+
+    <select id="getTopupRecordByParam" parameterType="com.grid.entity.QueryTopupBean" resultMap="topupMap">
+        SELECT p.pid, p.name AS pname, u.uid, u.name AS uname, t.amount, t.after_balance, t.create_time
+        FROM topup t
+        LEFT JOIN patient p ON t.pid = p.pid
+        LEFT JOIN user u ON t.uid = u.uid
+    </select>
+
+    <select id="getTopupRecordCountByParam" parameterType="com.grid.entity.QueryTopupBean" resultType="int">
+        SELECT COUNT(*)
+        FROM topup
+    </select>
+
+
+    <insert id="insert" parameterType="com.grid.entity.TopupBean">
+        INSERT INTO topup (<include refid="fields"/>)
+        VALUES (#{pid}, #{uid}, #{amount}, #{afterBalance}, "0", #{remark}, Now())
+    </insert>
+
+
+</mapper>

@@ -15,17 +15,14 @@
             fitColumns:true,
             loadMsg:"正在加载用户数据...",
             columns: [[
-                { field: 'uid', title: 'Id', width: '10%'},
+                { field: 'uid', title: 'ID', width: '10%'},
                 { field: 'name', title: '姓名', width: '7%'},
                 { field: 'loginname', title: '登录名', width: '12%'},
-                { field: 'department', title: '中心(部门)',width: '10%' },
-                { field: 'ugroup', title: '班组',width: '10%' },
+                { field: 'department', title: '部门',width: '10%' },
                 { field: 'gender', title: '性别', width: '4%'},
                 { field: 'mphone', title: '手机号码', width: '10%'},
                 { field: 'telphone', title: '固定电话', width: '10%'},
                 { field: 'type', title: '身份类型', width: '7%' },
-                { field: 'uauth', title: '用户权限', width: '15%'},
-                { field: 'managegroup', title: '管理班组', hidden:'true', width: '15%'},
                 { field: 'operateID', title: '操作',width:'15%', align: 'center',
                     formatter: function (value, rowData, rowIndex) {
                         return '<a href="javascript:void(0)" onclick="saveResetPassword('+rowIndex+')">重置密码</a>&nbsp&nbsp' +
@@ -207,18 +204,10 @@
                     <td><input class="easyui-textbox" data-options="prompt:'姓名'" id="nameCondition" name="nameCondition"/></td>
                     <td nowrap="nowrap">登录名:</td>
                     <td><input class="easyui-textbox" data-options="prompt:'登录名'" id="loginnameCondition" name="loginnameCondition"/></td>
-                    <td nowrap="nowrap">中心(部门):</td>
+                    <td nowrap="nowrap">部门:</td>
                     <td>
-                        <input id="departCondition" class="easyui-combobox" name="departCondition"
-                               data-options="prompt:'中心(部门)',valueField:'id',textField:'text',url:'<%=request.getContextPath()%>/data/query_operationDepart_data.json'" />
+                        <input id="departCondition" class="easyui-combobox" name="departCondition" data-options="prompt:'部门'" />
                     </td>
-                    <td nowrap="nowrap">班组:</td>
-                    <td>
-                        <input id="groupCondition" class="easyui-combobox" name="groupCondition"
-                               data-options="prompt:'班组',valueField:'id',textField:'text',url:'<%=request.getContextPath()%>/data/query_operationGroup_data.json'" />
-                    </td>
-                </tr>
-                <tr>
                     <td nowrap="nowrap">性别:</td>
                     <td>
                         <select name="genderCondition" id="genderCondition" class="easyui-combobox"
@@ -228,6 +217,9 @@
                             <option value="2">女</option>
                         </select>
                     </td>
+                </tr>
+                <tr>
+
                     <td nowrap="nowrap">手机号码:</td>
                     <td><input class="easyui-textbox" data-options="prompt:'手机号码'" id="mphoneCondition" name="mphoneCondition"/></td>
                     <td nowrap="nowrap">固定电话:</td>
@@ -237,24 +229,26 @@
                         <select name="typeCondition" id="typeCondition" class="easyui-combobox"
                                 editable="false"  style="width:100%">
                             <option value="0" selected>全部</option>
-                            <option value="1">普通用户</option>
+                            <option value="1">医生</option>
+                            <option value="3">主任</option>
                             <option value="2">管理员</option>
-                            <option value="3">审核员</option>
                         </select>
                     </td>
-                </tr>
-                <tr>
-                    <td nowrap="nowrap">创建时间:</td>
-                    <td><input id="starttimeCondition" name="starttimeCondition" class="easyui-datetimebox" style="width:100%" value=""
-                               data-options="prompt:'起始时间',currentText:'当前时间',closeText:'关闭',okText:'确定'" editable="false"></td>
-                    <td nowrap="nowrap">至</td>
-                    <td><input id="endtimeCondition" name="endtimeCondition" class="easyui-datetimebox" style="width:100%" value=""
-                               data-options="prompt:'结束时间',currentText:'当前时间',closeText:'关闭',okText:'确定'" editable="false" ></td>
+
                     <td align="right" colspan="2">
                         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="SearchUserAndAdminByParams()">检索</a>
                         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="clearUserAndAdminSearchParams()">清空条件</a>
                     </td>
                 </tr>
+                <%--<tr>--%>
+                    <%--<td nowrap="nowrap">创建时间:</td>--%>
+                    <%--<td><input id="starttimeCondition" name="starttimeCondition" class="easyui-datetimebox" style="width:100%" value=""--%>
+                               <%--data-options="prompt:'起始时间',currentText:'当前时间',closeText:'关闭',okText:'确定'" editable="false"></td>--%>
+                    <%--<td nowrap="nowrap">至</td>--%>
+                    <%--<td><input id="endtimeCondition" name="endtimeCondition" class="easyui-datetimebox" style="width:100%" value=""--%>
+                               <%--data-options="prompt:'结束时间',currentText:'当前时间',closeText:'关闭',okText:'确定'" editable="false" ></td>--%>
+                    <%----%>
+                <%--</tr>--%>
             </table>
         </form>
     </div>

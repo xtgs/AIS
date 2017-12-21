@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grid.dao.ChargeDao">
+
+
+    <resultMap id="chargeMap" type="com.grid.entity.ChargeBean">
+        <id column="cid" property="cid"/>
+        <result column="pid" property="pid"/>
+        <result column="uid" property="uid"/>
+        <result column="iid" property="iid"/>
+        <result column="pname" property="patientName"/>
+        <result column="uname" property="userName"/>
+        <result column="original_price" property="originalPrice"/>
+        <result column="discount" property="discount"/>
+        <result column="real_price" property="realPrice"/>
+        <result column="after_balance" property="afterBalance"/>
+        <result column="isdel" property="isdel"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <sql id="fields">
+        pid, uid, iid, original_price, discount, real_price, after_balance, isdel, remark, create_time
+    </sql>
+
+    <select id="getChargeRecordByParam" parameterType="com.grid.entity.QueryChargeBean" resultMap="chargeMap">
+        SELECT p.pid, p.name AS pname, u.uid, u.name AS uname, c.real_price, c.after_balance, c.create_time
+        FROM charge c
+        LEFT JOIN patient p ON c.pid = p.pid
+        LEFT JOIN user u ON c.uid = u.uid
+    </select>
+
+    <select id="getChargeRecordCountByParam" parameterType="com.grid.entity.QueryChargeBean" resultType="int">
+        SELECT COUNT(*)
+        FROM charge c
+    </select>
+
+
+    <insert id="insert" parameterType="com.grid.entity.ChargeBean">
+        INSERT INTO charge (<include refid="fields"/>)
+        VALUES (#{pid}, #{uid}, #{iid}, #{originalPrice}, #{discount}, #{realPrice}, #{afterBalance}, "0", #{remark}, Now())
+    </insert>
+
+
+</mapper>

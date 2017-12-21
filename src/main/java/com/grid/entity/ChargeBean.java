@@ -1,19 +1,34 @@
 package com.grid.entity;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by wanghuijian on 17/11/15.
  */
 public class ChargeBean {
     private String cid; //id
+
     private String pid; //病人id
+    private String patientName;
+
     private String uid; //医生id
+    private String userName;
+
     private String iid; //收费项目id
+
     private BigDecimal originalPrice;
     private BigDecimal discount;
-    private BigDecimal reslPrice;
+    private BigDecimal realPrice;
+    private BigDecimal afterBalance; //去掉消费金额后当时账户的余额
     private String isdel;
+    private String remark;
+    private Date createTime;
+    private PatientBean patientBean;
+    private User user;
 
 
     public String getCid() {
@@ -64,12 +79,12 @@ public class ChargeBean {
         this.discount = discount;
     }
 
-    public BigDecimal getReslPrice() {
-        return reslPrice;
+    public BigDecimal getRealPrice() {
+        return realPrice;
     }
 
-    public void setReslPrice(BigDecimal reslPrice) {
-        this.reslPrice = reslPrice;
+    public void setRealPrice(BigDecimal realPrice) {
+        this.realPrice = realPrice;
     }
 
     public String getIsdel() {
@@ -79,4 +94,66 @@ public class ChargeBean {
     public void setIsdel(String isdel) {
         this.isdel = isdel;
     }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public PatientBean getPatientBean() {
+        return patientBean;
+    }
+
+    public void setPatientBean(PatientBean patientBean) {
+        this.patientBean = patientBean;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public BigDecimal getAfterBalance() {
+        return afterBalance;
+    }
+
+    public void setAfterBalance(BigDecimal afterBalance) {
+        this.afterBalance = afterBalance;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
 }

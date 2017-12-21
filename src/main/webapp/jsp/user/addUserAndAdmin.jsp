@@ -59,7 +59,7 @@
             required: false,
             validType: 'maxLen[20]',
             missingMessage:'最多输入20个字符',
-            prompt:'请输入所在中心(部门)'
+            prompt:'请输入所在部门'
         });
         $('#ugroup').textbox({
             required: false,
@@ -123,11 +123,11 @@
         }
 
         if($.trim(($("#department").val())).length == 0){
-            MsgBox.show("请输入中心(部门)");
+            MsgBox.show("请输入所在部门");
             return false;
         }
         if(StringUtil.getCharNumber($.trim($("#department").val())) > 20){
-            MsgBox.show("中心(部门)过长，最长20个字符");
+            MsgBox.show("部门名称过长，最长20个字符");
             return false;
         }
 
@@ -201,20 +201,10 @@
                 <td><input class="easyui-textbox" id="name" name="name" style="width:260px" /></td>
             </tr>
             <tr>
-                <td style="text-align: right">中心(部门):<span style="color:red">*</span></td>
+                <td style="text-align: right">部门:<span style="color:red">*</span></td>
                 <td>
-                    <input class="easyui-combobox" id="department" name="department" style="width:260px"
-                           data-options="url:'<%=request.getContextPath()%>/data/operationDepart_data.json',
-                           prompt:'中心(部门)',valueField:'id',textField:'text',panelHeight:'auto'" />
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right">班组:<span style="color:red">*</span></td>
-                <%--<td><input class="easyui-textbox" type="text" id="ugrouup" name="ugroup" style="width:260px" /></td>--%>
-                <td>
-                    <input id="ugroup" class="easyui-combobox" name="ugroup" style="width:260px"
-                           data-options="url:'<%=request.getContextPath()%>/data/operationGroup_data.json',
-                           prompt:'班组',valueField:'id',textField:'text',panelHeight:'auto'" />
+                    <input class="easyui-textbox" id="department" name="department" style="width:260px"
+                           data-options="prompt:'部门'" />
                 </td>
             </tr>
 
@@ -239,28 +229,12 @@
                 <td style="text-align: right;">身份类型:</td>
                 <td style="text-align: left;">
                         <span class="radioSpan">
-                            <input type="radio" name="type" value="1" checked="checked">普通用户</input>
-                            <input type="radio" name="type" value="3">审核员</input>
+                            <input type="radio" name="type" value="1" checked="checked">医师</input>
+                            <input type="radio" name="type" value="3">主任</input>
                             <input type="radio" name="type" value="2">管理员</input>
                         </span>
                 </td>
             </tr>
-            <tr>
-                <td style="text-align: right">审核权限(仅限审核员身份):<span style="color:red">*</span></td>
-                <td>
-                    <input class="easyui-combobox" id="uauth" name="uauth" style="width:260px"
-                           data-options="url:'<%=request.getContextPath()%>/data/auditorAuth_data.json',
-                           prompt:'审核权限,默认为空',valueField:'id',textField:'text',multiple:'true',panelHeight:'auto'" />
-                </td>
-            </tr>
-            <%--<tr>--%>
-                <%--<td style="text-align: right">管理班组(仅限审核员身份):<span style="color:red">*</span></td>--%>
-                <%--<td>--%>
-                    <%--<input class="easyui-combobox" id="managegroup" name="managegroup" style="width:260px"--%>
-                           <%--data-options="url:'<%=request.getContextPath()%>/data/operationGroup_data.json',--%>
-                           <%--prompt:'管理班组,默认只管理自身所在班组',valueField:'id',textField:'text',multiple:'true',panelHeight:'auto'" />--%>
-                <%--</td>--%>
-            <%--</tr>--%>
             <tr>
                 <td style="text-align: right">备注:</td>
                 <td style="text-align: left;"><input class="easyui-textbox" id="remarks" name="remarks" data-options="multiline:true" style="width:260px;height:60px"/></td>

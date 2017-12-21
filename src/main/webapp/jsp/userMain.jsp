@@ -41,7 +41,7 @@
                 case 'patient_manage':
                     $('#content_panel').panel({
                         href:"<%=request.getContextPath() %>/patient/fwdPatientMainPage.do?random_id="+Math.random(),
-                        onLoad:function () {
+                        onLoad:function() {
                         }
                     });
                     break;
@@ -52,7 +52,21 @@
                         }
                     });
                     break;
-                case 'audit_tree':
+                case 'trade_record':
+                    $('#content_panel').panel({
+                        href:"<%=request.getContextPath() %>/patient/fwdTradeRecordPage.do?random_id="+Math.random(),
+                        onLoad:function(){
+                        }
+                    });
+                    break;
+                case 'user_score':
+                    $('#content_panel').panel({
+                        href:"<%=request.getContextPath() %>/patient/fwdUserScorePage.do?random_id="+Math.random(),
+                        onLoad:function(){
+                        }
+                    });
+                    break;
+                case 'user_tree':
                     break;
                 case 'patient_tree':
                     break;
@@ -114,20 +128,19 @@
             <li id="patient_tree">
                 <span>客户管理</span>
                 <ul>
-                    <li id="patient_manage">客户管理</li>
-                    <li id="patient_record">交易记录</li>
+                    <li id="patient_manage">客户信息</li>
+                    <li id="trade_record">交易记录</li>
                 </ul>
             </li>
-
             <% if(userBean.getUtypeStr().equals("管理员") || userBean.getUtypeStr().equals("审核员")){%>
-                <li id="audit_tree">
+                <li id="user_tree">
                     <span>员工管理</span>
                     <ul>
-                        <li id="user_manage">员工管理</li>
+                        <li id="user_manage">员工信息</li>
+                        <li id="user_score">员工绩效</li>
                     </ul>
                 </li>
             <% } %>
-
         </ul>
     </div>
 </div>
