@@ -1,12 +1,10 @@
 package com.grid.controller;
 
 import com.google.gson.Gson;
-import com.grid.entity.LoginUserBean;
-import com.grid.entity.QueryUserAndAdminParamBean;
-import com.grid.entity.ResetPasswordBean;
-import com.grid.entity.User;
+import com.grid.entity.*;
 import com.grid.exception.BgException;
 import com.grid.service.LoginService;
+import com.grid.service.UserScoreService;
 import com.grid.service.UserService;
 import com.grid.util.Constant;
 import com.grid.util.GlobalUtils;
@@ -33,6 +31,9 @@ public class UserController {
 
     @Resource
     private LoginService loginService;
+
+    @Resource
+    private UserScoreService userScoreService;
 
     /**
      * 转向 普通用户主页面
@@ -64,6 +65,11 @@ public class UserController {
     @RequestMapping("/fwdAuditorMainPage.do")
     public String fwdAuditorMainPage(HttpServletRequest resq, HttpServletResponse resp) {
         return "auditorMain";
+    }
+
+    @RequestMapping("/fwdUserScorePage")
+    public String fwdUserScorePage(HttpServletRequest request, HttpServletResponse response) {
+        return "/user/userScore";
     }
 
 
@@ -107,6 +113,20 @@ public class UserController {
             ResponseUtil.writeFailMsgToBrowse(resp, "出现异常，查询所有用户和管理员信息失败");
         }
     }
+
+    @RequestMapping("/queryAllUserScore")
+    public void queryAllUserScore(HttpServletRequest request, HttpServletResponse response, QueryUserScoreBean queryUserScoreBean) {
+        try {
+            String page = request.getParameter("page");
+            String rows = request.getParameter("rows");
+            String result = userScoreService.getUserScoreByParam(queryUserScoreBean, page, rows);
+            ResponseUtil.writeMsg(response, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseUtil.writeFailMsgToBrowse(response, "出现异常，查询用户业绩信息信息失败");
+        }
+    }
+
 
     @RequestMapping("/fwdAddUserAndAdminPage.do")
     public String fwdAddUserAndAdminPage(){
@@ -273,4 +293,6 @@ public class UserController {
         }
 
     }
+
+
 }

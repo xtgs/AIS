@@ -61,7 +61,7 @@
                     break;
                 case 'user_score':
                     $('#content_panel').panel({
-                        href:"<%=request.getContextPath() %>/patient/fwdUserScorePage.do?random_id="+Math.random(),
+                        href:"<%=request.getContextPath() %>/user/fwdUserScorePage.do?random_id="+Math.random(),
                         onLoad:function(){
                         }
                     });
