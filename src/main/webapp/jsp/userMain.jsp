@@ -66,9 +66,18 @@
                         }
                     });
                     break;
+                case 'department_score':
+                    $('#content_panel').panel({
+                        href:"<%=request.getContextPath() %>/department/fwdDepartmentScorePage.do?random_id="+Math.random(),
+                        onLoad:function(){
+                        }
+                    });
+                    break;
                 case 'user_tree':
                     break;
                 case 'patient_tree':
+                    break;
+                case 'department_tree':
                     break;
                 default:
                     MsgBox.show("功能正在开发，敬请期待！");
@@ -137,9 +146,15 @@
                     <span>员工管理</span>
                     <ul>
                         <li id="user_manage">员工信息</li>
-                        <li id="user_score">员工绩效</li>
+                        <li id="user_score">员工业绩</li>
                     </ul>
                 </li>
+            <li id="department_tree">
+                <span>部门管理</span>
+                <ul>
+                    <li id="department_score">部门业绩</li>
+                </ul>
+            </li>
             <% } %>
         </ul>
     </div>

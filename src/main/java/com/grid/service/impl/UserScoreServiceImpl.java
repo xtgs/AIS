@@ -35,103 +35,93 @@ public class UserScoreServiceImpl implements UserScoreService {
         //今天
         calendar.setTime(new Date());
         String today = format.format(calendar.getTime());
-        System.out.println("today: " + today);
 
         //昨天
         calendar.add(Calendar.DATE, -1);
         String yesterday = format.format(calendar.getTime());
-        System.out.println("yesterday: " + yesterday);
 
         //今月的第一天
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         String currentMonthFirstDay = format.format(calendar.getTime());
-        System.out.println("currentMonthFirstDay: " + currentMonthFirstDay);
 
         //今月的最后一天
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, 0);
         String currentMonthFinalDay = format.format(calendar.getTime());
-        System.out.println("currentMonthFinalDay: " + currentMonthFinalDay);
 
         //上月的第一天
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, -1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         String lastMonthFirstDay = format.format(calendar.getTime());
-//        System.out.println("lastMonthFirstDay: " + lastMonthFirstDay);
 
         //上月的最后一天
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 0);
         String lastMonthFinalDay = format.format(calendar.getTime());
-//        System.out.println("lastMonthFinalDay: " + lastMonthFinalDay);
 
         //今年的第一天
         calendar.setTime(new Date());
         calendar.add(Calendar.YEAR, 0);
         calendar.set(Calendar.DAY_OF_YEAR, 1);
         String currentYearFirstDay = format.format(calendar.getTime());
-//        System.out.println("currentYearFirstDay: " + currentYearFirstDay);
 
         //今年的最后一天
         calendar.setTime(new Date());
         calendar.add(Calendar.YEAR, 1);
         calendar.set(Calendar.DAY_OF_YEAR, 0);
         String currentYearFinalDay = format.format(calendar.getTime());
-//        System.out.println("currentYearFinalDay: " + currentYearFinalDay);
 
         //去年的第一天
         calendar.setTime(new Date());
         calendar.add(Calendar.YEAR, -1);
         calendar.set(Calendar.DAY_OF_YEAR, 1);
         String lastYearFirstDay = format.format(calendar.getTime());
-//        System.out.println("lastYearFirstDay: " + lastYearFirstDay);
 
         //去年的最后一天
         calendar.setTime(new Date());
         calendar.add(Calendar.YEAR, 0);
         calendar.set(Calendar.DAY_OF_YEAR, 0);
         String lastYearFinalDay = format.format(calendar.getTime());
-//        System.out.println("lastYearFinalDay: " + lastYearFinalDay);
 
         // 获取特定时间内的业绩, flag = 1
         if (queryUserScoreBean.getDateEnd() != null && queryUserScoreBean.getDateEnd().length() != 0) {
-            queryUserScoreBean.setDateEnd(queryUserScoreBean.getDateEnd() + " 24:59:59");
+            queryUserScoreBean.setDateEnd(queryUserScoreBean.getDateEnd() + " 23:59:59");
         }
         List<UserScoreBean> someDayScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         // 获取今天的业绩, flag = 2
         queryUserScoreBean.setDateStart(today);
-        queryUserScoreBean.setDateEnd(today + " 24:59:59");
+        queryUserScoreBean.setDateEnd(today + " 23:59:59");
         List<UserScoreBean> todayScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         // 获取昨天的业绩, flag = 3
         queryUserScoreBean.setDateStart(yesterday);
-        queryUserScoreBean.setDateEnd(yesterday + " 24:59:59");
+        queryUserScoreBean.setDateEnd(yesterday + " 23:59:59");
         List<UserScoreBean> yesterdayScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         // 获取本月的业绩, flag = 4
         queryUserScoreBean.setDateStart(currentMonthFirstDay);
-        queryUserScoreBean.setDateEnd(currentMonthFinalDay + " 24:59:59");
+        queryUserScoreBean.setDateEnd(currentMonthFinalDay + " 23:59:59");
         List<UserScoreBean> currentMonthScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         // 获取上月的业绩, flag = 5
         queryUserScoreBean.setDateStart(lastMonthFirstDay);
-        queryUserScoreBean.setDateEnd(lastMonthFinalDay + " 24:59:59");
+        queryUserScoreBean.setDateEnd(lastMonthFinalDay + " 23:59:59");
         List<UserScoreBean> lastMonthScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         // 获取今年的业绩, flag = 6
         queryUserScoreBean.setDateStart(currentYearFirstDay);
-        queryUserScoreBean.setDateEnd(currentYearFinalDay + " 24:59:59");
+        queryUserScoreBean.setDateEnd(currentYearFinalDay + " 23:59:59");
         List<UserScoreBean> currentYearScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         // 获取去年的业绩, flag = 7
         queryUserScoreBean.setDateStart(lastYearFirstDay);
-        queryUserScoreBean.setDateEnd(lastYearFinalDay + " 24:59:59");
+        queryUserScoreBean.setDateEnd(lastYearFinalDay + " 23:59:59");
         List<UserScoreBean> lastYearScore = userScoreDao.getUserScoreByParam(queryUserScoreBean);
 
         List<UserScoreBean> resultList = userScoreDao.getUidAndName(queryUserScoreBean);

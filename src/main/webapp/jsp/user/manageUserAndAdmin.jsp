@@ -8,7 +8,7 @@
 <script>
     $(function () {
         $("#userAndAdminList").datagrid({
-            title:"用户列表",
+            title:"员工列表",
             url:"<%=request.getContextPath()%>/user/queryAllUserAndAdmin.do?random_id="+Math.random(),
             rownumbers:true,
             singleSelect:true,
