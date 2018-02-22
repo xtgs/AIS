@@ -3,6 +3,7 @@ package com.grid.dao;
 import com.grid.entity.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by wanghuijian on 17/8/15.
@@ -38,4 +39,10 @@ public interface UserDao {
     LoginUserBean getUserInfoByLoginname(String name);
 
     int updatePassword(String uid, String password);
+
+    User getUserByLoginName(String loginname);
+
+    Set<String> getRoles(String loginname);
+
+    Set<String> getPermissions (String loginname);
 }

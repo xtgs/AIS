@@ -10,6 +10,8 @@ import com.grid.util.Constant;
 import com.grid.util.GlobalUtils;
 import com.grid.util.ResponseUtil;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

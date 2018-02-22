@@ -186,6 +186,13 @@
         and isdel = '0'
     </select>
 
+    <select id="getUserByLoginName" resultType="com.grid.entity.User">
+        select uid, loginname,type, password
+        from user
+        where loginname = #{loginname}
+        and isdel = '0'
+    </select>
+
     <update id="updatePassword" parameterType="map">
         UPDATE user
         SET password = #{1}

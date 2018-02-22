@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 17-8-11.
@@ -231,6 +232,17 @@ public class UserServiceImpl implements UserService{
     public boolean updatePassword(String uid, String password) {
         userDao.updatePassword(uid, password);
         return true;
+    }
 
+    public User getUserByLoginname(String loginname) {
+        return userDao.getUserByLoginName(loginname);
+    }
+
+    public Set<String> getRoles(String loginname) {
+        return userDao.getRoles(loginname);
+    }
+
+    public Set<String> getPermissions(String loginname) {
+        return userDao.getPermissions(loginname);
     }
 }

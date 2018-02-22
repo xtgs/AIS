@@ -10,12 +10,15 @@
                         http://www.springframework.org/schema/context/spring-context.xsd
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+    <import resource="spring-shiro.xml"></import>
+
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
     <context:component-scan base-package="com.grid" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <mvc:annotation-driven/>
+
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
     <bean id="mappingJacksonHttpMessageConverter"
           class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
@@ -52,6 +55,19 @@
         <property name="maxInMemorySize" value="40960"/>
     </bean>
 
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">redirect:/unauthorization.jsp</prop>
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">redirect:/login.jsp</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
     <!-- 文件下载字符编码格式 -->
     <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
         <property name="supportedMediaTypes">
@@ -60,6 +76,8 @@
             </list>
         </property>
     </bean>
+
+
 
     <!--在web.xml中指定了由DispatcherServlet过滤所有请求，
     让所有的请求都通过springmvc过滤，但是需要指定一些路径下的静态资源还可以被 直接访问-->
