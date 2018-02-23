@@ -37,10 +37,6 @@
         <property name="filterChainDefinitions">
             <value>
                 /user/**=authc
-                /officebusniss/**=authc
-                /holiday/**=authc
-                /compensated/**=authc
-                /officeBussinessOverview/**=anon
             </value>
         </property>
     </bean>

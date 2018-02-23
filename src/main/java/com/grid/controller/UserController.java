@@ -43,6 +43,7 @@ public class UserController {
      * @param resp
      * @return
      */
+    @RequiresAuthentication
     @RequestMapping("/fwdUserMainPage.do")
     public String forwardUserMainPage(HttpServletRequest resq, HttpServletResponse resp){
         return "userMain";
