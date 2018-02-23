@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("/login")
-public class LoginController {
+public class LoginController extends BaseController{
     @Resource
     private LoginService loginService;
 
@@ -82,10 +82,10 @@ public class LoginController {
             ResponseUtil.writeMsg(resp,jsonObj.toString());
         }catch (AuthenticationException e) {
             ResponseUtil.writeFailMsgToBrowse(resp, "用户名或者密码错误,请重新输入！");
-            System.err.println("用户名或者密码错误,请重新输入！");
+            log.error("用户名或者密码错误,请重新输入！");
         }catch (BgException e) {
             e.printStackTrace();
-            System.err.println(e.getMessage());
+            log.error(e.getMessage(), e);
             ResponseUtil.writeFailMsgToBrowse(resp, "出现异常，登录失败");
         }
     }
