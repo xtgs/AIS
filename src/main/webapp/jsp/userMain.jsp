@@ -111,7 +111,7 @@
 <body class="easyui-layout">
 <div data-options="region:'north',border:false" style="height:66px;background:#E4EEFF;text-align: center">
     <div style="font-size: 30px;float:left; margin-left: 8px; margin-top: 3px; margin-bottom: 3px">
-        <img src="<%=request.getContextPath()%>/image/page/sdgrid_logo.png" width="181.5px" height="60px" />
+        <img src="<%=request.getContextPath()%>/image/page/logo.PNG" width="181.5px" height="60px" />
     </div>
     <div style="font-size: 30px;float:left;margin-top: 10px">
         客户信息管理系统
