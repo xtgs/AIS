@@ -1,12 +1,18 @@
 package com.grid.entity;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.math.BigDecimal;
+
 /**
  * Created by wanghuijian on 17/11/15.
  */
 public class ItemBean {
     private String iid;
     private String name;
-    private String price;
+    private BigDecimal price;
+    private String id_price;
 
     public String getIid() {
         return iid;
@@ -24,11 +30,25 @@ public class ItemBean {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    public String getId_price() {
+        return id_price;
+    }
+
+    public void setId_price(String id_price) {
+        this.id_price = id_price;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
 }

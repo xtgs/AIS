@@ -52,6 +52,13 @@
                         }
                     });
                     break;
+                case 'item_manage':
+                    $('#content_panel').panel({
+                        href:"<%=request.getContextPath() %>/item/fwdManageItemPage.do?random_id="+Math.random(),
+                        onLoad:function(){
+                        }
+                    });
+                    break;
                 case 'trade_record':
                     $('#content_panel').panel({
                         href:"<%=request.getContextPath() %>/patient/fwdTradeRecordPage.do?random_id="+Math.random(),
@@ -78,6 +85,8 @@
                 case 'patient_tree':
                     break;
                 case 'department_tree':
+                    break;
+                case 'item_tree':
                     break;
                 default:
                     MsgBox.show("功能正在开发，敬请期待！");
@@ -142,13 +151,19 @@
                 </ul>
             </li>
             <% if(userBean.getUtypeStr().equals("管理员") || userBean.getUtypeStr().equals("审核员")){%>
-                <li id="user_tree">
-                    <span>员工管理</span>
-                    <ul>
-                        <li id="user_manage">员工信息</li>
-                        <li id="user_score">员工业绩</li>
-                    </ul>
-                </li>
+            <li id="user_tree">
+                <span>员工管理</span>
+                <ul>
+                    <li id="user_manage">员工信息</li>
+                    <li id="user_score">员工业绩</li>
+                </ul>
+            </li>
+            <li id="item_tree">
+                <span>项目管理</span>
+                <ul>
+                    <li id="item_manage">项目管理</li>
+                </ul>
+            </li>
             <li id="department_tree">
                 <span>部门管理</span>
                 <ul>

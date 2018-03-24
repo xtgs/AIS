@@ -15,14 +15,14 @@
             fitColumns:true,
             loadMsg:"正在加载用户数据...",
             columns: [[
-                { field: 'uid', title: 'ID', width: '10%'},
-                { field: 'name', title: '姓名', width: '7%'},
-                { field: 'loginname', title: '登录名', width: '12%'},
-                { field: 'department', title: '部门',width: '10%' },
-                { field: 'gender', title: '性别', width: '4%'},
-                { field: 'mphone', title: '手机号码', width: '10%'},
-                { field: 'telphone', title: '固定电话', width: '10%'},
-                { field: 'type', title: '身份类型', width: '7%' },
+                { field: 'uid', title: 'ID', width: '10%', align: 'center'},
+                { field: 'name', title: '姓名', width: '7%', align: 'center'},
+                { field: 'loginname', title: '登录名', width: '12%', align: 'center'},
+                { field: 'department', title: '部门',width: '10%', align: 'center' },
+                { field: 'gender', title: '性别', width: '4%', align: 'center'},
+                { field: 'mphone', title: '手机号码', width: '10%', align: 'center'},
+                { field: 'telphone', title: '固定电话', width: '10%', align: 'center'},
+                { field: 'type', title: '身份类型', width: '7%', align: 'center' },
                 { field: 'operateID', title: '操作',width:'15%', align: 'center',
                     formatter: function (value, rowData, rowIndex) {
                         return '<a href="javascript:void(0)" onclick="saveResetPassword('+rowIndex+')">重置密码</a>&nbsp&nbsp' +

@@ -15,9 +15,9 @@
             fitColumns:true,
             loadMsg:"正在加载用户数据...",
             columns: [[
-                { field: 'time', title: '时间', width: '20%'},
-                { field: 'totalCharge', title: '客户总消费金额', width: '40%'},
-                { field: 'totalTopup', title: '客户总充值金额', width: '40%'}
+                { field: 'time', title: '时间', width: '20%', align: 'center'},
+                { field: 'totalCharge', title: '客户总消费金额', width: '40%', align: 'center'},
+                { field: 'totalTopup', title: '客户总充值金额', width: '40%', align: 'center'}
             ]],
             pagination: false
         });

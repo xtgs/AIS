@@ -17,18 +17,18 @@
             fitColumns:true,
             loadMsg:"正在加载用户数据...",
             columns: [[
-                { field: 'pid', title: '卡号', width: '16%', sortable:'true'},
-                { field: 'cardId', title: '身份证号', width: '16%', sortable:'true'},
-                { field: 'name', title: '姓名', width: '7%', sortable:'true'},
-                { field: 'birthday', title: '年龄', width: '5%', sortable:'true',
+                { field: 'pid', title: '卡号', width: '16%', sortable:'true', align: 'center'},
+                { field: 'cardId', title: '身份证号', width: '16%', sortable:'true', align: 'center'},
+                { field: 'name', title: '姓名', width: '7%', sortable:'true', align: 'center'},
+                { field: 'birthday', title: '年龄', width: '5%', sortable:'true', align: 'center',
                     formatter:function(date){
                         var unixTimestamp = new Date(date);
                         var nowTime = new Date();
                         return nowTime.getUTCFullYear() - unixTimestamp.getUTCFullYear();
                     }
                 },
-                { field: 'mphone', title: '手机号', width: '10%', sortable:'true'},
-                { field: 'gender', title: '性别', width: '5%', sortable:'true',
+                { field: 'mphone', title: '手机号', width: '10%', sortable:'true', align: 'center'},
+                { field: 'gender', title: '性别', width: '5%', sortable:'true', align: 'center',
                     formatter: function (value) {
                         if(value == "1") {
                             return "男";
@@ -39,8 +39,8 @@
                         }
                     }
                 },
-                { field: 'balance', title: '余额',width: '7%', sortable:'true' },
-                { field: 'createDate', title: '建卡时间', width: '10%', sortable:'true',
+                { field: 'balance', title: '余额',width: '7%', sortable:'true', align: 'center'},
+                { field: 'createDate', title: '建卡时间', width: '10%', sortable:'true', align: 'center',
                     formatter:function(date){
                         var unixTimestamp = new Date(date);
                         var month = unixTimestamp.getMonth()+1;
@@ -72,7 +72,7 @@
                     }
                 },
                 <% }%>
-                { field: 'remark', title: '备注', width: '15%', sortable:'true' }
+                { field: 'remark', title: '备注', width: '15%', sortable:'true', align: 'center'}
             ]],
             pagination: true
         });

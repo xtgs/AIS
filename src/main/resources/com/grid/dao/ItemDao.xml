@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grid.dao.ItemDao">
+
+
+    <insert id="insert" parameterType="com.grid.entity.ItemBean">
+        INSERT INTO item(name, price)
+        VALUES (#{name}, #{price})
+    </insert>
+
+    <select id="getItemList" resultType="com.grid.entity.ItemBean">
+        SELECT iid, name, price
+        FROM item
+    </select>
+
+    <select id="getItemById" resultType="com.grid.entity.ItemBean">
+        SELECT iid, name, price
+        FROM item
+        WHERE iid = #{iid}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM item
+        WHERE iid = #{iid}
+    </delete>
+
+    <update id="update" parameterType="com.grid.entity.ItemBean">
+        UPDATE item
+        SET name = #{name}, price = #{price}
+        WHERE iid = #{iid}
+    </update>
+
+
+</mapper>
+

@@ -46,8 +46,63 @@
                 return unixTimestamp.getUTCFullYear()+"-"+ month +"-"+unixTimestamp.getDate();
             }
         });
+//        $('input.item').click(function(){
+//            alert(this.checked?"勾上了":"取消了勾选")
+//        });
+        var price;
+        var discount;
+        $("#item").combobox({
+            onChange: function(iid) {
+                var curValue=$('#item').combobox('getValue');
+                if(curValue == undefined)
+                    return '';
+                var list = curValue.split(":");
+                price = list[1];
+                if (discount == undefined)
+                    $('#charge').textbox('setValue', price);
+                else
+                    $('#charge').textbox('setValue', changeTwoDecimal_f(price * discount /100));
+
+//                $('#charge').setValue(curValue);
+//                alert(curValue);
+            }
+        });
+
+        $("#discount").textbox({
+            onChange: function(dc) {
+                discount = dc;
+                var finalPrice = changeTwoDecimal_f(price * discount / 100);
+                $('#charge').textbox('setValue', finalPrice);
+//                $('#charge').setValue(curValue);
+//                alert(curValue);
+            }
+        });
 //        $("#charge").textbox('textbox').css("font-size", "68px");
     });
+
+    function fomatFloat(src,pos){
+        return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);
+    }
+
+    function changeTwoDecimal_f(x) {
+        var f_x = parseFloat(x);
+        if (isNaN(f_x)) {
+            alert('function:changeTwoDecimal->parameter error');
+            return false;
+        }
+        var f_x = Math.round(x * 100) / 100;
+        var s_x = f_x.toString();
+        var pos_decimal = s_x.indexOf('.');
+        if (pos_decimal < 0) {
+            pos_decimal = s_x.length;
+            s_x += '.';
+        }
+        while (s_x.length <= pos_decimal + 2) {
+            s_x += '0';
+        }
+        return s_x;
+    }
+
 
     function formatDate(val, row){
         var unixTimestamp = new Date(val);
@@ -57,18 +112,6 @@
         return final_date;
     }
 
-    function checkMoidfyUserAndAdminFormBeforeSubmit(){
-        if($.trim(($("#buildType").val())).length == 0){
-            MsgBox.show("请输入建设类型");
-            return false;
-        }
-        if($.trim(($("#operationGroup").val())).length == 0){
-            MsgBox.show("请输入运维组");
-            return false;
-        }
-
-        return true;
-    }
     function submitCharge() {
 //         if(!checkMoidfyUserAndAdminFormBeforeSubmit()){
 //            return;
@@ -126,13 +169,29 @@
                 <td style="text-align: right">余额:</td>
                 <td><input id="balance" name="balance" class="easyui-textbox" style="width:260px" readonly/></td>
             </tr>
+
+            <tr>
+                <td style="text-align: right">项目:</td>
+                <td>
+                    <input id="item" class="easyui-combobox" name="item"
+                           data-options="url:'<%=request.getContextPath()%>/item/getItemList.do',
+                               prompt:'项目',valueField:'id_price',textField:'name',panelHeight:'auto'" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right">折扣:</td>
+                <td><input id="discount" name="discount" class="easyui-textbox" style="width:260px"/></td>
+                <td>%</td>
+            </tr>
+
+
             <tr>
                 <td></td>
                 <td style="text-align: center; font-size: 26px;">收费金额:</td>
             </tr>
             <tr>
                 <td></td>
-                <td><input id="charge" name="charge" type="textbox"
+                <td><input id="charge" name="charge" class="easyui-textbox" type="text"
                            style="width:260px; height: 50px; text-align: center; font-size: 40px" /></td>
                 <td>元</td>
             </tr>

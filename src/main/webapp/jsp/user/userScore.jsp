@@ -15,15 +15,15 @@
             fitColumns:true,
             loadMsg:"正在加载用户数据...",
             columns: [[
-                { field: 'uid', title: 'ID', width: '10%'},
-                { field: 'name', title: '姓名', width: '10%'},
-                { field: 'todayScore', title: '今日业绩', width: '10%'},
-                { field: 'yesterdayScore', title: '昨日业绩', width: '10%'},
-                { field: 'currentMonthScore', title: '本月业绩', width: '10%'},
-                { field: 'lastMonthScore', title: '上月业绩', width: '10%'},
-                { field: 'currentYearScore', title: '今年业绩', width: '10%'},
-                { field: 'lastYearScore', title: '去年业绩', width: '10%'},
-                { field: 'somedayScore', title: '指定日期业绩', width: '10%'}
+                { field: 'uid', title: 'ID', width: '10%', align: 'center'},
+                { field: 'name', title: '姓名', width: '10%', align: 'center'},
+                { field: 'todayScore', title: '今日业绩', width: '10%', align: 'center'},
+                { field: 'yesterdayScore', title: '昨日业绩', width: '10%', align: 'center'},
+                { field: 'currentMonthScore', title: '本月业绩', width: '10%', align: 'center'},
+                { field: 'lastMonthScore', title: '上月业绩', width: '10%', align: 'center'},
+                { field: 'currentYearScore', title: '今年业绩', width: '10%', align: 'center'},
+                { field: 'lastYearScore', title: '去年业绩', width: '10%', align: 'center'},
+                { field: 'somedayScore', title: '指定日期业绩', width: '10%', align: 'center'}
 //                { field: 'remarks', title: '备注', width: '15%' }
             ]],
             pagination: true

@@ -202,6 +202,12 @@ public class PatientController {
             return;
         }
         BigDecimal chargeDecimal = new BigDecimal(chargeString);
+        String itemIdAndPrice = request.getParameter("item");
+        String[] itemList = itemIdAndPrice.split(":");
+        String discount = request.getParameter("discount");
+        chargeBean.setIid(itemList[0]);
+        chargeBean.setOriginalPrice(new BigDecimal(itemList[1]));
+        chargeBean.setDiscount(new BigDecimal(discount));
         chargeBean.setRealPrice(chargeDecimal);
         String result1 = patientService.chargeInBalance(chargeBean);
         String result2 = chargeService.addOneChargeRecord(chargeBean);
