@@ -31,6 +31,13 @@
                 },
                 message:'格式不正确，只能为字母或数字组合'
             },
+            number:{
+                validator: function (value, param) {
+                    var reg_loginname = /^[0-9]*$/g;
+                    return reg_loginname.test(value);
+                },
+                message:'格式不正确，只能为数字'
+            },
             mphone:{
                 validator: function (value, param) {
                     var reg = /^1\d{10}$/;
@@ -67,6 +74,14 @@
 //                alert(curValue);
             }
         });
+
+        $('#discount').textbox({
+            required: true,
+            validType: ['maxLenWithoutTrim[3]','number'],
+            prompt:'请输入折扣'
+        });
+
+        $("#discount").textbox("setValue", "100");
 
         $("#discount").textbox({
             onChange: function(dc) {
@@ -113,9 +128,9 @@
     }
 
     function submitCharge() {
-//         if(!checkMoidfyUserAndAdminFormBeforeSubmit()){
-//            return;
-//         }
+         if(!checkChargeBeforeSubmit()){
+            return;
+         }
         $.ajax({
             url:"<%=request.getContextPath()%>/patient/saveCharge.do"+
             "?randomid=" + Math.random(),
@@ -131,6 +146,14 @@
                 $('#patientList').datagrid('reload');
             }
         });
+    }
+    
+    function checkChargeBeforeSubmit() {
+        if($.trim(($("#discount").val())).length == 0){
+            MsgBox.show("请输入折扣");
+            return false;
+        }
+        return true;
     }
 </script>
 <div  style="width: 400px;margin: 0 auto;">

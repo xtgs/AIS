@@ -25,10 +25,11 @@
     </sql>
 
     <select id="getChargeRecordByParam" parameterType="com.grid.entity.QueryChargeBean" resultMap="chargeMap">
-        SELECT p.pid, p.name AS pname, u.uid, u.name AS uname, c.real_price, c.after_balance, c.create_time
+        SELECT p.pid, p.name AS pname, u.uid, u.name AS uname, i.name AS itemName, c.original_price, c.discount, c.real_price, c.after_balance, c.create_time
         FROM charge c
         LEFT JOIN patient p ON c.pid = p.pid
         LEFT JOIN user u ON c.uid = u.uid
+        LEFT JOIN item i ON c.iid = i.iid
     </select>
 
     <select id="getChargeRecordCountByParam" parameterType="com.grid.entity.QueryChargeBean" resultType="int">

@@ -19,6 +19,7 @@ public class ChargeBean {
     private String userName;
 
     private String iid; //收费项目id
+    private String itemName;
 
     private BigDecimal originalPrice;
     private BigDecimal discount;
@@ -149,6 +150,14 @@ public class ChargeBean {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     @Override

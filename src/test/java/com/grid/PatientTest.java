@@ -32,6 +32,10 @@ public class PatientTest extends BaseTest{
     @Test
     public void getTradeRecordByParamTest() {
         QueryTradeRecordBean queryTradeRecordBean = new QueryTradeRecordBean();
+        queryTradeRecordBean.setSort("createTime");
+        queryTradeRecordBean.setGetrows(10);
+        queryTradeRecordBean.setStartnum(0);
+        queryTradeRecordBean.setOrder("desc");
         List<TradeRecordBean> tradeRecordBeanList = patientDao.getTradeRecordByParam(queryTradeRecordBean);
         System.out.println(patientDao.getTradeRecordCountByParam(queryTradeRecordBean));
         for (TradeRecordBean tradeRecordBean : tradeRecordBeanList) {

@@ -32,6 +32,16 @@
                 { field: 'patientCardId', title: '身份证号', width: '16%', sortable:'true'},
                 { field: 'patientName', title: '客户姓名', width: '7%', sortable:'true'},
                 { field: 'patientPhone', title: '手机号', width: '10%', sortable:'true'},
+                { field: 'itemName', title: '项目名称', width: '10%', sortable:'true'},
+                { field: 'originalPrice', title: '原价', width: '10%', sortable:'true'},
+                { field: 'discount', title: '折扣', width: '10%', sortable:'true',
+                    formatter:function (value) {
+                        if (value == undefined)
+                            return '';
+                        else
+                            return value + "%"
+                    }
+                },
                 { field: 'amount', title: '交易金额',width: '8%', sortable:'true' },
                 { field: 'afterBalance', title: '交易后余额',width: '8%', sortable:'true' },
                 { field: 'uid', title: '医生编号', width: '10%', sortable:'true'},

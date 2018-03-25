@@ -16,6 +16,10 @@ public class TradeRecordBean {
     private String patientName;
     private String patientPhone;
 
+    private String iid;
+    private String itemName;
+    private String originalPrice;
+    private String discount;
     private String amount;
     private String afterBalance;
 
@@ -112,6 +116,38 @@ public class TradeRecordBean {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(String originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getIid() {
+        return iid;
+    }
+
+    public void setIid(String iid) {
+        this.iid = iid;
     }
 
     @Override

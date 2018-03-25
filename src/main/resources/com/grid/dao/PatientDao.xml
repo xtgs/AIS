@@ -95,22 +95,26 @@
         (SELECT
         c.trade_type as tradeType,
         c.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
+        c.iid, i.name as itemName, c.original_price as originalPrice, c.discount,
         c.real_price as amount, c.after_balance as afterBalance,
         c.uid, u.name as userName,
         c.create_time as createTime, c.remark
         FROM charge c
         LEFT JOIN patient p on c.pid = p.pid
         LEFT JOIN user u on c.uid = u.uid
+        LEFT JOIN item i on c.iid = i.iid
         UNION
         SELECT
         t.trade_type as tradeType,
         t.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
+        t.iid, i.name as itemName, t.original_price as originalPrice, t.discount,
         t.amount, t.after_balance as afterBalance,
         t.uid, u.name as userName,
         t.create_time as createTime, t.remark
         FROM topup t
         LEFT JOIN patient p on t.pid = p.pid
-        LEFT JOIN user u on t.uid = u.uid) AS total
+        LEFT JOIN user u on t.uid = u.uid
+        LEFT JOIN item i on t.iid = i.iid) AS total
         <where>
             <if test="tradeType != null and tradeType != ''">AND tradeType LIKE '%${tradeType}%'</if>
             <if test="pid != null and pid != ''">AND pid LIKE '%${pid}%'</if>
