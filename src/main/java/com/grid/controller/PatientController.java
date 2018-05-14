@@ -2,11 +2,12 @@ package com.grid.controller;
 
 import com.google.gson.Gson;
 import com.grid.entity.*;
-import com.grid.service.ChargeService;
-import com.grid.service.PatientService;
-import com.grid.service.TopupService;
+import com.grid.exception.BgException;
+import com.grid.service.*;
 import com.grid.util.Constant;
+import com.grid.util.PrintUtil;
 import com.grid.util.ResponseUtil;
+import org.apache.xmlbeans.XmlException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +16,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by wanghuijian on 17/11/16.
@@ -32,6 +37,12 @@ public class PatientController {
 
     @Resource
     private TopupService topupService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ItemService itemService;
 
     @RequestMapping("/fwdPatientMainPage")
     public String fwdPatientMainPage(HttpServletRequest request, HttpServletResponse response) {
@@ -217,6 +228,43 @@ public class PatientController {
         chargeBean.setRealPrice(chargeDecimal);
         String result1 = patientService.chargeInBalance(chargeBean);
         String result2 = chargeService.addOneChargeRecord(chargeBean);
+
+        //生成打印账单
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        DateFormat d1 = DateFormat.getDateInstance(); //默认语言（汉语）下的默认风格（MEDIUM风格，比如：2008-6-16 20:54:53）
+        String str1 = d1.format(now);
+
+        PrintBean printBean = new PrintBean();
+        printBean.setBillName(str1 + "-charge-" + chargeBean.getPid());
+        printBean.setTradeType("1");
+        printBean.setPid(chargeBean.getPid());
+
+        printBean.setPid(chargeBean.getPid());
+        String patientName = patientService.getPatientById(chargeBean.getPid()).getName();
+        printBean.setPatientName(patientName);
+        String docterName = null;
+        try {
+            docterName = userService.getUserAndAdminDataByUid(chargeBean.getUid()).getName();
+        } catch (BgException e) {
+            e.printStackTrace();
+        }
+        printBean.setDocterName(docterName);
+
+        String itemName = itemService.getItemById(chargeBean.getIid()).getName();
+        printBean.setItemName(itemName);
+        printBean.setOriginalPrice(chargeBean.getOriginalPrice());
+        printBean.setRealPrice(chargeBean.getRealPrice());
+        printBean.setAfterBalance(chargeBean.getAfterBalance());
+        PrintUtil printUtil = new PrintUtil();
+        try {
+            printUtil.createWord(printBean);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlException e) {
+            e.printStackTrace();
+        }
+
         ResponseUtil.writeMsg(response, result1+","+result2);
     }
 
@@ -235,6 +283,42 @@ public class PatientController {
         topupBean.setAmount(topupDecimal);
         String result1 = patientService.topupInBalance(topupBean);
         String result2 = topupService.addOneTopupRecord(topupBean);
+
+
+        //生成打印账单
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        DateFormat d1 = DateFormat.getDateInstance(); //默认语言（汉语）下的默认风格（MEDIUM风格，比如：2008-6-16 20:54:53）
+        String str1 = d1.format(now);
+
+        PrintBean printBean = new PrintBean();
+        printBean.setBillName(str1 + "-topup-" + topupBean.getPid());
+        printBean.setTradeType("2");
+        printBean.setPid(topupBean.getPid());
+
+        printBean.setPid(topupBean.getPid());
+        String patientName = patientService.getPatientById(topupBean.getPid()).getName();
+        printBean.setPatientName(patientName);
+        String docterName = null;
+        try {
+            docterName = userService.getUserAndAdminDataByUid(topupBean.getUid()).getName();
+        } catch (BgException e) {
+            e.printStackTrace();
+        }
+        printBean.setDocterName(docterName);
+
+        printBean.setTopupAmount(topupBean.getAmount());
+        printBean.setAfterBalance(topupBean.getAfterBalance());
+        PrintUtil printUtil = new PrintUtil();
+        try {
+            printUtil.createWord(printBean);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlException e) {
+            e.printStackTrace();
+        }
+
+
         ResponseUtil.writeMsg(response, result1+","+result2);
     }
 
