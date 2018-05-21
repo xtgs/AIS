@@ -25,3 +25,32 @@
 .form-label-cell{
     width: 70px;
 }
+
+.header {
+    background: #c19a40;
+    overflow: hidden;
+}
+.nav {
+    /*background: #04564a url(../image/page/zxyjh4_02.gif) repeat-x;*/
+    height: 35px;
+    border-left: 1px solid #58957f;
+    border-right: 1px solid #58957f;
+}
+
+.panel-header, .panel-body {
+    border-color: #c19a40;
+}
+
+.panel-header {
+    background-color: #c3b086;
+    background: -webkit-linear-gradient(top,#c3b086 0,#c3b086 100%);
+    background: -moz-linear-gradient(top,#c3b086 0,#c3b086 100%);
+    background: -o-linear-gradient(top,#c3b086 0,#c3b086 100%);
+    background: linear-gradient(to bottom,#c3b086 0,#c3b086 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#c3b086,endColorstr=#c3b086,GradientType=0);
+}
+
+.textbox {
+    border-color: #c19a40;
+}

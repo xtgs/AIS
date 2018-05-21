@@ -109,7 +109,7 @@
 }
 .panel-header,
 .panel-body {
-  border-color: #95B8E7;
+  border-color: #c3b288;
 }
 .panel-header {
   background-color: #E0ECFF;
@@ -2769,6 +2769,7 @@
   color: #000000;
 }
 .tree-node-selected {
+  /*background: #ffe48d;*/
   background: #ffe48d;
   color: #000000;
 }
