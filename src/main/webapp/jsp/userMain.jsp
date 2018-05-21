@@ -118,30 +118,39 @@
     </script>
 </head>
 <body class="easyui-layout">
-<div data-options="region:'north',border:false" style="height:66px;background:#E4EEFF;text-align: center">
-    <div style="font-size: 30px;float:left; margin-left: 8px; margin-top: 3px; margin-bottom: 3px">
-        <img src="<%=request.getContextPath()%>/image/page/logo.PNG" width="181.5px" height="60px" />
+<div data-options="region:'north',border:false" style="height:135px;background: #04564a url(../image/page/logo.PNG) repeat-x;text-align: center">
+    <div style="padding: 20px 0 0 25px; float: left; position: relative; overflow: hidden;">
+        <img src="<%=request.getContextPath()%>/image/page/logo2.png" width="250px" height="60px"/>
     </div>
-    <div style="font-size: 30px;float:left;margin-top: 10px">
-        客户信息管理系统
+    <div style="float: left; padding: 20px 0 0 50px">
+        <h1>客户信息管理系统</h1>
     </div>
-    <div style="height:40px;font-size: 16px;line-height:20px;float: right;margin-right: 10px;margin-top: 5px">
+    <div style="height:80px;font-size: 16px;line-height:20px;float: right;padding: 20px 50px 0 0;">
         <%=userBean.getUname()%>|<%=userBean.getUtypeStr()%><br/>
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="modifyPassword()" >修改密码</a>
         <a href="<%=request.getContextPath()%>/login/exitLogin.do" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" >退出</a>
     </div>
+    <%--<div style="height:40px;font-size: 16px;line-height:20px;float: right;margin-right: 10px;margin-top: 5px">--%>
+        <%--<%=userBean.getUname()%>|<%=userBean.getUtypeStr()%><br/>--%>
+        <%--<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="modifyPassword()" >修改密码</a>--%>
+        <%--<a href="<%=request.getContextPath()%>/login/exitLogin.do" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" >退出</a>--%>
+    <%--</div>--%>
+    <div style="width:100%;" class="header">
+        <div class="nav">
+        </div>
+    </div>
 </div>
-<div id="center_oper_area" data-options="region:'center',title:'工作面板 '">
-    <div id="content_panel" class="easyui-panel"style="padding:10px;text-align: center"
+<div id="center_oper_area" data-options="region:'center',title:'客户管理'">
+    <div id="content_panel" class="easyui-panel"style="padding:10px 20px;text-align: center"
          data-options="fit:true,border:false">
         <div style="height: 200px;"></div>
         <div style="height:100px;font-size: 30px;line-height: 60px;">欢迎使用客户信息管理系统</div>
     </div>
 </div>
-<div data-options="region:'west',split:false,title:'导航菜单',collapsible:false" style="width:180px;padding:10px;">
+<div data-options="region:'west',split:false,collapsible:false" style="width:200px;padding:10px;background: url(<%=request.getContextPath()%>/image/left_bg.gif)">
     <div style="margin:20px 0;"></div>
     <div id="modifyPasswordDialog"></div>
-    <div class="easyui-panel" style="padding:5px; border: 0px;) ">
+    <div class="easyui-panel" style="border: 0px; background: transparent;">
         <ul id="menu-tree" class="easyui-tree">
             <li id="patient_tree">
                 <span>客户管理</span>
