@@ -93,6 +93,7 @@
     <select id="getTradeRecordByParam" parameterType="com.grid.entity.QueryTradeRecordBean" resultType="com.grid.entity.TradeRecordBean">
         SELECT * FROM
         (SELECT
+        c.cid as tradeId,
         c.trade_type as tradeType,
         c.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
         c.iid, i.name as itemName, c.original_price as originalPrice, c.discount,
@@ -105,6 +106,7 @@
         LEFT JOIN item i on c.iid = i.iid
         UNION
         SELECT
+        t.tip as tradeId,
         t.trade_type as tradeType,
         t.pid, p.name as patientName, p.card_id as patientCardId, p.mphone as patientPhone,
         t.iid, i.name as itemName, t.original_price as originalPrice, t.discount,
@@ -116,6 +118,7 @@
         LEFT JOIN user u on t.uid = u.uid
         LEFT JOIN item i on t.iid = i.iid) AS total
         <where>
+            <if test="tradeId != null and tradeId != ''">AND tradeId = #{tradeId}</if>
             <if test="tradeType != null and tradeType != ''">AND tradeType LIKE '%${tradeType}%'</if>
             <if test="pid != null and pid != ''">AND pid LIKE '%${pid}%'</if>
             <if test="patientName != null and patientName != ''">AND patientName LIKE '%${patientName}%'</if>
@@ -154,6 +157,7 @@
         LEFT JOIN patient p on t.pid = p.pid
         LEFT JOIN user u on t.uid = u.uid) AS total
         <where>
+            <if test="tradeId != null and tradeId != ''">AND tradeId = #{tradeId}</if>
             <if test="tradeType != null and tradeType != ''">AND tradeType LIKE '%${tradeType}%'</if>
             <if test="pid != null and pid != ''">AND pid LIKE '%${pid}%'</if>
             <if test="patientName != null and patientName != ''">AND patientName LIKE '%${patientName}%'</if>

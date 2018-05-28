@@ -17,6 +17,7 @@
             fitColumns:true,
             loadMsg:"正在加载用户数据...",
             columns: [[
+                { field: 'tradeId', title: '交易号', width: '10%', hidden:'true'},
                 { field: 'tradeType', title: '交易类型', width: '7%', sortable:'true',
                     formatter: function (value) {
                         if (value == "1") {
@@ -51,6 +52,11 @@
                         return formatDateTime(date);
                     }
                 },
+                { field: "produceBill", title: '操作',width:'15%', align: 'center',
+                    formatter: function (value, rowData, rowIndex) {
+                        return '<a href="javascript:void(0)" onclick="produceBill(' + rowIndex + ')">生成账单</a>';
+                    }
+                },
                 { field: 'remark', title: '备注', width: '15%', sortable:'true' }
             ]],
             pagination: true
@@ -79,7 +85,25 @@
         minute = minute < 10 ? ('0' + minute) : minute;
         second = second < 10 ? ('0' + second) : second;
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
-    };
+    }
+
+    function produceBill(index){
+        $('#recordList').datagrid('selectRow',index);// 关键在这里
+        var row = $('#recordList').datagrid('getSelected');
+
+            $.ajax({
+                url:"<%=request.getContextPath()%>/patient/printBill.do?tradeId=" + row.tradeId +"&random_id="+Math.random(),
+                type:'post',
+                async:false,
+                error:function(data){
+                    MsgBox.show(data.responseText);
+                },
+                success:function(data){
+                    MsgBox.show(data);
+//                    $('#patientList').datagrid('reload');
+                }
+            });
+    }
 
     function SearchUserAndAdminByParams() {
         var tradeType = $("#tradeType").val();

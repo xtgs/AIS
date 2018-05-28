@@ -19,5 +19,7 @@ public interface PatientService {
     String chargeInBalance(ChargeBean chargeBean);
     String topupInBalance(TopupBean topupBean);
 
+    TradeRecordBean getTradeRecordById(String tradeId);
+
     String getTradeRecordByParam(QueryTradeRecordBean queryTradeRecordBean, String page, String rows, String sort, String order);
 }

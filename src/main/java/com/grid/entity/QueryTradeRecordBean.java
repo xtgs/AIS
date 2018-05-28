@@ -9,6 +9,7 @@ public class QueryTradeRecordBean {
     private String sort;
     private String order;
 
+    public String tradeId;
     public String tradeType;
     public String pid;
     public String patientCardId;
@@ -149,5 +150,13 @@ public class QueryTradeRecordBean {
 
     public void setCreateTimeTo(String createTimeTo) {
         this.createTimeTo = createTimeTo;
+    }
+
+    public String getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(String tradeId) {
+        this.tradeId = tradeId;
     }
 }

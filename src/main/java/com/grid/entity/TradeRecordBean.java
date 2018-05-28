@@ -9,6 +9,7 @@ import java.util.Date;
  * Created by wanghuijian on 17/12/20.
  */
 public class TradeRecordBean {
+    private String tradeId;
     private String tradeType;
 
     private String pid;
@@ -148,6 +149,14 @@ public class TradeRecordBean {
 
     public void setIid(String iid) {
         this.iid = iid;
+    }
+
+    public String getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(String tradeId) {
+        this.tradeId = tradeId;
     }
 
     @Override

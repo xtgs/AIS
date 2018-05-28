@@ -296,7 +296,6 @@ public class PatientController {
         printBean.setTradeType("2");
         printBean.setPid(topupBean.getPid());
 
-        printBean.setPid(topupBean.getPid());
         String patientName = patientService.getPatientById(topupBean.getPid()).getName();
         printBean.setPatientName(patientName);
         String docterName = null;
@@ -320,6 +319,54 @@ public class PatientController {
 
 
         ResponseUtil.writeMsg(response, result1+","+result2);
+    }
+
+    @RequestMapping("/printBill")
+    public void printBill(@RequestParam("tradeId") String tradeId, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            TradeRecordBean tradeRecordBean = patientService.getTradeRecordById(tradeId);
+
+            Date now = new Date();
+            Calendar cal = Calendar.getInstance();
+            DateFormat d1 = DateFormat.getDateInstance(); //默认语言（汉语）下的默认风格（MEDIUM风格，比如：2008-6-16 20:54:53）
+            String str1 = d1.format(now);
+
+            PrintBean printBean = new PrintBean();
+            printBean.setBillName(str1 + "-topup-" + tradeId);
+            printBean.setTradeType(tradeRecordBean.getTradeType());
+            printBean.setPid(tradeRecordBean.getPid());
+
+            String patientName = patientService.getPatientById(tradeRecordBean.getPid()).getName();
+            printBean.setPatientName(patientName);
+            String docterName = null;
+            try {
+                docterName = userService.getUserAndAdminDataByUid(tradeRecordBean.getUid()).getName();
+            } catch (BgException e) {
+                e.printStackTrace();
+            }
+            printBean.setDocterName(docterName);
+            if (tradeRecordBean.getIid() != null) {
+                String itemName = itemService.getItemById(tradeRecordBean.getIid()).getName();
+                printBean.setItemName(itemName);
+                printBean.setOriginalPrice(new BigDecimal(tradeRecordBean.getOriginalPrice()));
+            }
+            printBean.setRealPrice(new BigDecimal(tradeRecordBean.getAmount()));
+
+            printBean.setTopupAmount(new BigDecimal(tradeRecordBean.getAmount()));
+            printBean.setAfterBalance(new BigDecimal(tradeRecordBean.getAfterBalance()));
+            PrintUtil printUtil = new PrintUtil();
+            try {
+                printUtil.createWord(printBean);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlException e) {
+                e.printStackTrace();
+            }
+            ResponseUtil.writeMsg(response, "打印成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseUtil.writeFailMsgToBrowse(response, "出现异常,打印失败");
+        }
     }
 
 

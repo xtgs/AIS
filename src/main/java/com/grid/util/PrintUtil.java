@@ -87,7 +87,7 @@ public class PrintUtil {
             infoTableRowTwo.getCell(2).setText(printBean.getDocterName());
         }
 
-        if (printBean.getTradeType() == "1") {   //消费
+        if (printBean.getTradeType().equals("1")) {   //消费
             XWPFTableRow infoTableRowType = infoTable.createRow();
             infoTableRowType.getCell(1).setText("交易类型");
             infoTableRowType.getCell(2).setText("消费");
@@ -112,7 +112,7 @@ public class PrintUtil {
             if (printBean.getRealPrice() != null) {
                 infoTableRowFive.getCell(2).setText(printBean.getRealPrice().toString() + "元");
             }
-        } else if (printBean.getTradeType() == "2") { //充值
+        } else if (printBean.getTradeType().equals("2")) { //充值
             XWPFTableRow infoTableRowType = infoTable.createRow();
             infoTableRowType.getCell(1).setText("交易类型");
             infoTableRowType.getCell(2).setText("充值");
