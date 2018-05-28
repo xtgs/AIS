@@ -137,6 +137,11 @@ public class PrintUtil {
             infoTableRowSix.getCell(2).setText(printBean.getAfterBalance().toString() + "元");
         }
 
+        XWPFTableRow infoTableRowSeven = infoTable.createRow();
+        infoTableRowSeven.getCell(1).setText("");
+
+        XWPFTableRow infoTableRowEight = infoTable.createRow();
+        infoTableRowEight.getCell(1).setText("客户签字：");
 
 
         document.write(out);
