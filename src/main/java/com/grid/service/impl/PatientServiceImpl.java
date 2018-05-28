@@ -168,4 +168,28 @@ public class PatientServiceImpl implements PatientService {
         String birthday = birthYear + "-" + birthMonth + "-" + birthDay;
         return birthday;
     }
+
+
+    @Override
+    public TradeRecordBean getTradeRecordById(String tradeId) {
+        List<TradeRecordBean> tradeRecordList = null;
+        QueryTradeRecordBean queryTradeRecordBean = new QueryTradeRecordBean();
+        queryTradeRecordBean.setTradeId(tradeId);
+
+        try {
+            String page = "1";
+            String rows = "10";
+            PaginationParamBean paramBean = PaginationUtil.getPaginationParamBean(page, rows);
+            queryTradeRecordBean.setStartnum(paramBean.getStartnum());
+            queryTradeRecordBean.setGetrows(paramBean.getGetrows());
+
+            queryTradeRecordBean.setSort("createTime");
+            queryTradeRecordBean.setOrder("desc");
+            tradeRecordList = patientDao.getTradeRecordByParam(queryTradeRecordBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tradeRecordList.get(0);
+
+    }
 }

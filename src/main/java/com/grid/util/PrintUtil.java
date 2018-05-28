@@ -6,6 +6,7 @@ import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +30,9 @@ public class PrintUtil {
         if (printBean.getBillName() == null) {
             printBean.setBillName("bill");
         }
-        FileOutputStream out = new FileOutputStream(new File(filePath + "/bill/" + printBean.getBillName() + ".doc"));
+        String newFilePath = filePath + "/bill/" + printBean.getBillName() + ".doc";
+        File file = new File(newFilePath);
+        FileOutputStream out = new FileOutputStream(file);
 
         //添加标题
         XWPFParagraph titleParagraph = document.createParagraph();
@@ -87,7 +90,7 @@ public class PrintUtil {
             infoTableRowTwo.getCell(2).setText(printBean.getDocterName());
         }
 
-        if (printBean.getTradeType() == "1") {   //消费
+        if (printBean.getTradeType().equals("1")) {   //消费
             XWPFTableRow infoTableRowType = infoTable.createRow();
             infoTableRowType.getCell(1).setText("交易类型");
             infoTableRowType.getCell(2).setText("消费");
@@ -112,7 +115,7 @@ public class PrintUtil {
             if (printBean.getRealPrice() != null) {
                 infoTableRowFive.getCell(2).setText(printBean.getRealPrice().toString() + "元");
             }
-        } else if (printBean.getTradeType() == "2") { //充值
+        } else if (printBean.getTradeType().equals("2")) { //充值
             XWPFTableRow infoTableRowType = infoTable.createRow();
             infoTableRowType.getCell(1).setText("交易类型");
             infoTableRowType.getCell(2).setText("充值");
@@ -139,7 +142,9 @@ public class PrintUtil {
         document.write(out);
         out.close();
         System.out.println("create_table document written success.");
-        System.out.println(new File("bbb").getAbsoluteFile());
+//        System.out.println(new File("bbb").getAbsoluteFile());
+        Desktop.getDesktop().open(file);
+
     }
 }
 
