@@ -6,6 +6,7 @@ import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +30,9 @@ public class PrintUtil {
         if (printBean.getBillName() == null) {
             printBean.setBillName("bill");
         }
-        FileOutputStream out = new FileOutputStream(new File(filePath + "/bill/" + printBean.getBillName() + ".doc"));
+        String newFilePath = filePath + "/bill/" + printBean.getBillName() + ".doc";
+        File file = new File(newFilePath);
+        FileOutputStream out = new FileOutputStream(file);
 
         //添加标题
         XWPFParagraph titleParagraph = document.createParagraph();
@@ -139,7 +142,9 @@ public class PrintUtil {
         document.write(out);
         out.close();
         System.out.println("create_table document written success.");
-        System.out.println(new File("bbb").getAbsoluteFile());
+//        System.out.println(new File("bbb").getAbsoluteFile());
+        Desktop.getDesktop().open(file);
+
     }
 }
 
